@@ -1,0 +1,7 @@
+bin
+include
+lib
+local
+.Python
+/static/environments
+/static/gifs

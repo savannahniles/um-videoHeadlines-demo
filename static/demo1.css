@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
     font-family: Avenir;
     src: url(/static/avenir.ttf);
 }
@@ -13,4 +13,10 @@ h1, h2 {
 	font-family: Avenir;
 	font-weight: lighter;
 	color: #8FDFF2;
+}*/
+
+.thumbnail {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
 }

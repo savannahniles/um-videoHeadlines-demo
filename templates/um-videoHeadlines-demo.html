@@ -3,15 +3,28 @@
 	<head>
 		<title>Video Headlines Demo</title>
 
-		<link rel="stylesheet" href="/static/um-videoHeadlines-demo.css"></link>
-		<script src="/static/um-videoHeadlines-demo.js"></script>
+		<link rel="stylesheet" href="{{ url_for('static', filename='um-videoHeadlines-demo.css') }}"></link>
+		<script src="{{ url_for('static', filename='um-videoHeadlines-demo.js') }}"></script>
 
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 	</head>
-	<body onload=init()>
+	<body>
+		<h1>Video Headlines Authoring Tool: Submit a URL to a video to get started</h1>
+		<div id="errors">
 
-		<h1>Video Headlines Landing Page</h1>
+			{{ request.args.get('error', '') }}
+
+		</div>
+		<h2 id="url-form">
+			<form method="post" action="{{ url_for('submitUrl') }}">
+				<label for="url">Video URL:</label>
+				<input type="text" name="url"/>
+				<input type="submit"/>
+	        </form>
+        </h2>
+<!-- 		  Video URL: <input type="text" name="url" id="url">
+		  <button onclick="submitUrl()">Submit</button> -->
 
 	</body>
 </html>

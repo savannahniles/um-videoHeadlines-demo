@@ -2,6 +2,6 @@
 
 source bin/activate
 
-pip install Flask
+pip install -f requirements.pip
 
 exit

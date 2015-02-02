@@ -1,1 +1,3 @@
-source bin/activate
+ROOT="$( cd "$( dirname "${BASH_SCOURCE[0]}" )" && pwd)"
+source $ROOT/bin/activate
+#PATH="$ROOT/modules":$PATH

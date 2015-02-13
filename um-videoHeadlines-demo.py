@@ -39,14 +39,23 @@ def sceneDetection(videoId):
 
 @app.route('/authoringTool/makeGif/<videoId>', methods=['GET'])
 def makeGif(videoId):
+    errorCode = 0
     start = request.args.get('start')
     end = request.args.get('end')
     gif = None
     if (not start or not end):
-        errorCode = 1
+        # print ("no start or end time")
+        errorCode = "no start or end time"
     else:
-        errorCode = 0
         gif = video.processGif(videoId, start, end);
+        if (not gif):
+            print ("no gif")
+            errorCode = "no gif"
+    # if (not start or not end):
+    #     errorCode = 1
+    # else:
+    #     errorCode = 0
+    #     gif = video.processGif(videoId, start, end);
     response = {'errorCode' : errorCode, 'videoId': videoId, 'start': start, 'end': end, 'gif': gif}
     return json.dumps(response)
 

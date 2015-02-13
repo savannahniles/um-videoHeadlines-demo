@@ -1,6 +1,7 @@
 //---------------------------Prompt the user to input a url-----------------------------
 
 var _STATIC_URL = "http://localhost:5000/";
+var videoId;
 
 //download YouTube player API
 var tag = document.createElement('script');
@@ -17,7 +18,8 @@ function onYouTubeIframeAPIReady() {
 
 //---------------------------Set the page up (content + listeners)-----------------------------
 
-function init(videoId) {
+function init(id) {
+	videoId = id
 
 	// call and load scene thumbnails
 	scenesUrl = _STATIC_URL + 'authoringTool/sceneDetection/' + videoId;
@@ -55,6 +57,24 @@ var buildScenes = function () {
 	};
 }
 
+var showGif = function () {
+
+	videoCol = document.getElementById("videoCol");
+	response = JSON.parse(this.responseText);
+	if (!response) {
+		handleError ("Whoops, error getting response.")
+		return;
+	}
+	console.log (response);
+	imagePath = _STATIC_URL + response.gif;
+	var gif = document.createElement("img");
+	gif.setAttribute('src', imagePath);
+	gif.setAttribute('class', 'gif');
+
+	videoCol.appendChild(gif);
+	
+}
+
 //---------------------------Event listeners-----------------------------
 
 function loopVideo(start, end) {
@@ -79,8 +99,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   		console.log ('endTime');
   		console.log (endTime);
 
-  		//
-
+  		createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
+		console.log("createGifUrl");
+		errorMessage = 'There was a problem. The gif could not be loaded.';
+		handleRequest(createGifUrl, errorMessage, showGif);
 
     });
 });

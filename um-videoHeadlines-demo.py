@@ -51,12 +51,7 @@ def makeGif(videoId):
         if (not gif):
             print ("no gif")
             errorCode = "no gif"
-    # if (not start or not end):
-    #     errorCode = 1
-    # else:
-    #     errorCode = 0
-    #     gif = video.processGif(videoId, start, end);
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': start, 'end': end, 'gif': gif}
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
     return json.dumps(response)
 
 

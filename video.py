@@ -1,6 +1,7 @@
 import os, sys, io, json, subprocess
-
 from bs4 import BeautifulSoup
+from moviepy.editor import *
+
 
 _STATIC_URL		= "http://localhost:5000/"
 _STATIC_BASE	= "static/video/"
@@ -43,6 +44,8 @@ def download(videoId, url):
 		print error
 
 def createJson(videoId, input):
+	print "////////////////"
+	print "Creating json for scenes..."
 	f = open(input, 'r')
 	shot_xml = BeautifulSoup(f.read())
 	f.close()
@@ -62,7 +65,8 @@ def createJson(videoId, input):
 	f.close()
 
 def detectScenes(videoId): #I think I need an error message system here....
-	# videoFile = os.path.join(_STATIC_BASE, videoId, videoId + '.mp4')
+	print "////////////////"
+	print "Detecting scenes..."
 	videoFile = getVideoPath(videoId)
 	outputDir = os.path.join(_STATIC_BASE, videoId)
 	cmd = 'modules/Shotdetect/build/shotdetect-cmd -i %s -a %s -o %s -v -c -f -l -r'% (videoFile, videoId, _STATIC_BASE)
@@ -70,43 +74,17 @@ def detectScenes(videoId): #I think I need an error message system here....
 	scenes = createJson(videoId, os.path.join(outputDir, "result.xml"))
 
 def processGif(videoId, start, end):
+	print "////////////////"
+	print "Processing gif..."
 	videoFile = getVideoPath(videoId)
-	clipLength = str(float(end) - float(start))
-	outputDir = os.path.join(_STATIC_BASE, videoId, "gif") #output for everything here
-	imagesPath = os.path.join(outputDir, "%03d.png") #put numbered pngs in the gif directory
-	gifPath = os.path.join(outputDir, "scene.gif")
-	
-	#process the clip for individual frames
-	cmd_createFrames = 'ffmpeg -i ' + videoFile + ' -ss ' + start + ' -t ' + clipLength + ' -s 480x270 -f image2 ' + imagesPath
-	os.system("mkdir " + outputDir) #make the outout directory
-	try:
-		response = subprocess.check_output(cmd_createFrames, shell=True, stderr=subprocess.STDOUT)
-		print response
-	except subprocess.CalledProcessError as e:
-		print e.output
-		return None
-
-	#get the framerate
-	cmd_getFramerate = 'ffmpeg -i ' + videoFile + " 2>&1 | sed -n 's/.*, \(.*\) fp.*/\\1/p'"
-	try:
-		framerate = subprocess.check_output(cmd_getFramerate, shell=True, stderr=subprocess.STDOUT)
-		framerate = str(int(float(framerate.strip())))
-	except subprocess.CalledProcessError as e:
-		print e.output
-		return None
-	print framerate
-
-	#process the gif
-	imagesPath = os.path.join(outputDir, "*.png") #new path to every png in the directory
-	cmd_createGif = "convert -fuzz 1% -delay 1x" + framerate + " " + imagesPath + " -coalesce -layers OptimizeTransparency " + gifPath
-	print cmd_createGif
-	try:
-		response = subprocess.check_output(cmd_createGif, shell=True, stderr=subprocess.STDOUT)
-		print response
-	except subprocess.CalledProcessError as e:
-		print e.output
-		return None
-
+	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + ".gif"
+	gifPath = os.path.join(outputDir, gifName)
+	clip = (VideoFileClip(videoFile)
+			.subclip(float(start),float(end)))
+	clip.write_gif(gifPath)
 	return gifPath
 
 #-------------------------------------- getters -------------------------------------- 

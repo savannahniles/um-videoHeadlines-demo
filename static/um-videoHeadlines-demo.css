@@ -6,6 +6,8 @@
 body {
 	font-family: Avenir;
 	overflow: scroll;
+	margin: 0;
+	padding: 0;
 }
 
 h1, h2 {
@@ -14,30 +16,34 @@ h1, h2 {
 	color: #8FDFF2;
 }
 
-#container {
-	width: 95%;
+#container, #gifBuilder {
+	width: 98%;
 	margin: 0px auto;
 }
 
 /* Authoring Tool */
 
-.col {
-	width: 50%;
-	min-height: 500px;
-}
-
-#videoCol {
-	background: lightblue;
-	float: left;
-	text-align: center;
-}
-
-#thumbsCol {
-	float: left;
-	background: pink;
-}
-
 .thumbnail {
-	height: 100px;
 	display: inline-block;
+	padding: 5px;
+}
+
+#player {
+	padding: 5px;
+	position: absolute;
+	visibility: hidden;
+}
+
+#outputGif {
+	position: absolute;
+	cursor: pointer;
+	opacity: 0;
+}
+
+#gifBuilder {
+	z-index: 1;
+	background: rgba(255,255,255,.85);
+	position: fixed;
+	height: 100%;
+	top: 0px;
 }

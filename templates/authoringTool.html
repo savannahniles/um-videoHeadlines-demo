@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<div id="container">	
+<div class="container">	
 	<h1 id="thing">Select a scene</h1>
 
 	<iframe width="430" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0" frameborder="0" allowfullscreen id="player"></iframe>
@@ -26,9 +26,19 @@
 	</div>
 	<div id="thumbnailContainer"></div>
 
-	<div id="gifBuilder">
+	<div class="container container" id="gifBuilder">
 		<p>Pick a different scene</p>
 		<h1>Edit your gif</h1>
+		<div class="col leftCol">
+			<div id="gifContainer"></div>
+			<div id="time">Adjust start and end time
+			</div>
+		</div>
+		<div class="col rightCol">
+			<div id="stabilization">Stabilization</div>
+			<div id="masking">Masking</div>
+			<div id="looping">Looping</div>
+		</div>
 	</div>
 		
 	

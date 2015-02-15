@@ -5,7 +5,6 @@
 
 body {
 	font-family: Avenir;
-	overflow: scroll;
 	margin: 0;
 	padding: 0;
 }
@@ -16,9 +15,21 @@ h1, h2 {
 	color: #8FDFF2;
 }
 
-#container, #gifBuilder {
+.container {
 	width: 98%;
 	margin: 0px auto;
+}
+
+.rightCol {
+	width: 50%;
+	height: 100%;
+	float: right;
+}
+
+.leftCol {
+	width: 50%;
+	height: 100%;
+	float: left;
 }
 
 /* Authoring Tool */
@@ -44,6 +55,23 @@ h1, h2 {
 	z-index: 1;
 	background: rgba(255,255,255,.85);
 	position: fixed;
-	height: 100%;
+	height: 0px;
+	overflow: hidden;
 	top: 0px;
+	opacity: 0;
+}
+
+#gifContainer {
+	height: 200px;
+	text-align: center;
+}
+
+#loadingGif {
+	height: 200px;
+	margin-top: 100px;
+	text-align: center;
+}
+
+.gif {
+	height: 100%;
 }

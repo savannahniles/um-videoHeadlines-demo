@@ -44,7 +44,7 @@ var buildScenes = function () {
 	for (var i = 0; i < totalScenes; i++) {
 		start = response.scenes[i]['start'];
 		end = response.scenes[i]['end'];
-		imagePath = _STATIC_URL + response.scenes[i]['keyframes']['in_img'];
+		imagePath = response.scenes[i]['keyframes']['in_img'];
 		thumbId = imagePath.replace(/:/g,"");
 
 		var thumb = document.createElement("img");
@@ -63,25 +63,25 @@ var buildScenes = function () {
 	videoPlayer.setAttribute('width', thumbnailWidth);
 }
 
-var showGif = function () {
+function resetGifContainer () {
+	document.getElementById("gifContainer").innerHTML='<p id="loadingGif">Loading...<i class="fa fa-cog fa-spin fa-lg"></i></p>'; 
+}
 
-	videoCol = document.getElementById("videoCol");
+var showGif = function () {
+	gifContainer = document.getElementById("gifContainer");
 	response = JSON.parse(this.responseText);
 	if (!response) {
 		handleError ("Whoops, error getting response.")
 		return;
-	}
+	}	
 	console.log (response);
-	imagePath = _STATIC_URL + response.gif;
+	imagePath = response.gif;
 	var gif = document.createElement("img");
 	gif.setAttribute('src', imagePath);
 	gif.setAttribute('class', 'gif');
 
-	videoCol.appendChild(gif);
-
-
-	//reveal modal box first
-	//delete everything in the gif box and add it
+	gifContainer.innerHTML="";
+	gifContainer.appendChild(gif);
 	
 }
 
@@ -131,6 +131,11 @@ function outputGif() {
 	console.log (startTime);
 	console.log ('endTime');
 	console.log (endTime);
+
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+	gifBuilder.style.height = "100%";
+	gifBuilder.style.opacity = 1;
 
 	createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
 	console.log("createGifUrl");

@@ -55,9 +55,8 @@ def createJson(videoId, input):
 		imgs = shot.findAll("img")
 		shot = {"start": float(float(shot["msbegin"])/1000),
 				"end": float(float(float(shot["msbegin"])+float(shot["msduration"]))/1000),
-				"keyframes": {"in_img": "%s/%s"%(_STATIC_BASE, imgs[0]["src"]),
-						   "out_img": "%s/%s"%(_STATIC_BASE, imgs[1]["src"])}}
-
+				"keyframes": {"in_img": os.path.join(_STATIC_URL,_STATIC_BASE, imgs[0]["src"]),
+						   "out_img": os.path.join(_STATIC_URL,_STATIC_BASE, imgs[1]["src"])}}
 		shots.append(shot)
 
 	f = open(os.path.dirname(input)+"/scenes.json", "w")
@@ -85,7 +84,7 @@ def processGif(videoId, start, end):
 	clip = (VideoFileClip(videoFile)
 			.subclip(float(start),float(end)))
 	clip.write_gif(gifPath)
-	return gifPath
+	return os.path.join(_STATIC_URL, gifPath)
 
 #-------------------------------------- getters -------------------------------------- 
 

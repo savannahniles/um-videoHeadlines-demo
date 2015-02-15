@@ -1,4 +1,4 @@
-//---------------------------Prompt the user to input a url-----------------------------
+//---------------------------Load the video-----------------------------
 
 var _STATIC_URL = "http://localhost:5000/";
 var videoId;
@@ -34,48 +34,82 @@ var buildScenes = function () {
 	document.getElementById("loading").innerHTML = "";
 	response = JSON.parse(this.responseText);
 	if (!response) {
-		handleError ("Whoops, error getting response.")
+		handleError ("Whoops, error getting response.");
 		return;
 	}
 	console.log (response);
-	thumbnailContainer = document.getElementById("thumbnailContainer")
-	totalScenes = response.scenes.length
+	var thumbnailContainer = document.getElementById("thumbnailContainer");
+	var thumbnailWidth = (thumbnailContainer.offsetWidth / 7) - 11; //padding
+	var totalScenes = response.scenes.length;
 	for (var i = 0; i < totalScenes; i++) {
 		start = response.scenes[i]['start'];
 		end = response.scenes[i]['end'];
-		imagePath = _STATIC_URL + response.scenes[i]['keyframes']['in_img'];
+		imagePath = response.scenes[i]['keyframes']['in_img'];
+		thumbId = imagePath.replace(/:/g,"");
 
 		var thumb = document.createElement("img");
-		// console.log (thumb);
 		thumb.setAttribute('src', imagePath);
 		thumb.setAttribute('start', start);
 		thumb.setAttribute('end', end);
 		thumb.setAttribute('class', 'thumbnail');
-		thumb.setAttribute('onclick', "loopVideo(" + start + ", " + end + ")");
+		thumb.setAttribute('id', thumbId);
+		thumb.setAttribute('onclick', "previewVideo('" + thumbId + "', " + start + ", " + end + ")");
+		thumb.setAttribute('width', thumbnailWidth);
 
 		thumbnailContainer.appendChild(thumb);
 	};
+	//set youtube iFrame to be the same size
+	var videoPlayer = document.getElementById("player");
+	videoPlayer.setAttribute('width', thumbnailWidth);
+}
+
+function resetGifContainer () {
+	document.getElementById("gifContainer").innerHTML='<p id="loadingGif">Loading...<i class="fa fa-cog fa-spin fa-lg"></i></p>'; 
 }
 
 var showGif = function () {
-
-	videoCol = document.getElementById("videoCol");
+	gifContainer = document.getElementById("gifContainer");
 	response = JSON.parse(this.responseText);
 	if (!response) {
 		handleError ("Whoops, error getting response.")
 		return;
-	}
+	}	
 	console.log (response);
-	imagePath = _STATIC_URL + response.gif;
+	imagePath = response.gif;
 	var gif = document.createElement("img");
 	gif.setAttribute('src', imagePath);
 	gif.setAttribute('class', 'gif');
 
-	videoCol.appendChild(gif);
+	gifContainer.innerHTML="";
+	gifContainer.appendChild(gif);
 	
 }
 
-//---------------------------Event listeners-----------------------------
+//---------------------------Click listeners-----------------------------
+
+function previewVideo(thumbId, start, end) {
+	thumb = document.getElementById(thumbId);
+	videoHeight = thumb.offsetHeight - 11;
+	
+	var bodyRect = document.documentElement.getBoundingClientRect(),
+    	elemRect = thumb.getBoundingClientRect(),
+    	topOffset = elemRect.top - bodyRect.top,
+    	leftOffset = elemRect.left - bodyRect.left;
+
+    var videoPlayer = document.getElementById("player");
+	videoPlayer.setAttribute('height', videoHeight);
+	videoPlayer.style.top = topOffset + "px";
+	videoPlayer.style.left = leftOffset + "px";
+	
+	var button = document.getElementById("outputGif");
+	button.style.top = topOffset + videoHeight/2 + "px";
+	button.style.left = leftOffset - 50 + "px";
+
+	videoPlayer.style.visibility = 'visible';
+	button.style.opacity = 1
+
+	loopVideo(start, end);
+}
 
 function loopVideo(start, end) {
   	clearInterval(timeupdater);
@@ -91,21 +125,24 @@ function loopVideo(start, end) {
 	timeupdater = setInterval(updateTime, 100);
 }
 
-document.addEventListener("DOMContentLoaded", function(event) { 
-  document.getElementById("outputGif").addEventListener("click", function () {
-  		console.log ('outputting gif');
-  		console.log ('startTime');
-  		console.log (startTime);
-  		console.log ('endTime');
-  		console.log (endTime);
+function outputGif() {
+	console.log ('outputting gif');
+	console.log ('startTime');
+	console.log (startTime);
+	console.log ('endTime');
+	console.log (endTime);
 
-  		createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
-		console.log("createGifUrl");
-		errorMessage = 'There was a problem. The gif could not be loaded.';
-		handleRequest(createGifUrl, errorMessage, showGif);
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+	gifBuilder.style.height = "100%";
+	gifBuilder.style.opacity = 1;
 
-    });
-});
+	createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	console.log("createGifUrl");
+	errorMessage = 'There was a problem. The gif could not be loaded.';
+	handleRequest(createGifUrl, errorMessage, showGif);
+
+}
 
 //---------------------------Asynch Helpers-----------------------------
 

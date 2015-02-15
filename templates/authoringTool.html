@@ -12,23 +12,35 @@
 
 </head>
 <body>
-<div id="container">
-	<h1 id="thing">Video Headlines Authoring Tool Sandbox</h1>
+<div class="container">	
+	<h1 id="thing">Select a scene</h1>
 
-	<div id="videoCol" class="col">
-			<iframe width="430" height="241" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0" frameborder="0" allowfullscreen id="player"></iframe>
-			<button id="outputGif">Output gif</button>
+	<iframe width="430" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0" frameborder="0" allowfullscreen id="player"></iframe>
+	<button id="outputGif" onclick="outputGif()">Output gif</button>
+	
+
+	<div id="error"></div>
+	<div id="loading">
+		Still processing the video for scenes...</br>
+		<i class="fa fa-cog fa-spin fa-5x"></i>
 	</div>
+	<div id="thumbnailContainer"></div>
 
-	<div id="thumbsCol" class="col">
-		<div id="error"></div>
-		<div id="loading">
-			Still processing the video for scenes...</br>
-			<i class="fa fa-cog fa-spin fa-5x"></i>
+	<div class="container container" id="gifBuilder">
+		<p>Pick a different scene</p>
+		<h1>Edit your gif</h1>
+		<div class="col leftCol">
+			<div id="gifContainer"></div>
+			<div id="time">Adjust start and end time
+			</div>
 		</div>
-		<div id="thumbnailContainer"></div>
-		
+		<div class="col rightCol">
+			<div id="stabilization">Stabilization</div>
+			<div id="masking">Masking</div>
+			<div id="looping">Looping</div>
+		</div>
 	</div>
+		
 	
 </div>
 </body>

@@ -11,57 +11,69 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube p
 
 var player, startTime, endTime;
 var timeupdater = null;
+var maxGifLength = 5;
 
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player');
+    player = new YT.Player('player-toggle', {
+		events: {
+			'onReady': onPlayerReady
+		}
+	}); 
 }
+
+function onPlayerReady(evt) {
+    initSlider();
+}
+
 
 //---------------------------Set the page up (content + listeners)-----------------------------
 
 function init(id) {
 	videoId = id
+}
 
-	// call and load scene thumbnails
-	scenesUrl = _STATIC_URL + 'authoringTool/sceneDetection/' + videoId;
-	errorMessage = 'The scenes for this video could not be loaded.';
-	handleRequest(scenesUrl, errorMessage, buildScenes);
+//---------------------------JQuery UI slider-----------------------------
+
+function initSlider() {
+	$(function() {
+		startTime = 0;
+		endTime = 14.9;
+		var duration = player.getDuration();
+		var maxLength = 15;
+	    $( "#slider-range" ).slider({
+	      range: true,
+	      min: 0,
+	      max: duration,
+	      maxRange: maxLength,
+	      step: .001,
+	      values: [ startTime, endTime ],
+	      slide: function(event, ui) {
+            startTime = ui.values[0];
+	      	endTime = ui.values[1]
+	        $( "#start" ).val(startTime);
+	        $( "#end" ).val(endTime);
+	        loopVideo(startTime, endTime); 
+	      }
+	    });
+	    $( "#start" ).val(startTime);
+	    $( "#end" ).val(endTime);
+
+	    $( "#start" ).change(function() {
+	    	startTime = $(this).val();
+		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+		    loopVideo(startTime, endTime);
+		});
+	    $( "#end" ).change(function() {
+	    	endTime = $(this).val();
+		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+		    loopVideo(startTime, endTime);
+		});
+
+	});
 
 }
 
 //---------------------------The place where shit gets built-----------------------------
-
-var buildScenes = function () {
-	document.getElementById("loading").innerHTML = "";
-	response = JSON.parse(this.responseText);
-	if (!response) {
-		handleError ("Whoops, error getting response.");
-		return;
-	}
-	console.log (response);
-	var thumbnailContainer = document.getElementById("thumbnailContainer");
-	var thumbnailWidth = (thumbnailContainer.offsetWidth / 7) - 11; //padding
-	var totalScenes = response.scenes.length;
-	for (var i = 0; i < totalScenes; i++) {
-		start = response.scenes[i]['start'];
-		end = response.scenes[i]['end'];
-		imagePath = response.scenes[i]['keyframes']['in_img'];
-		thumbId = imagePath.replace(/:/g,"");
-
-		var thumb = document.createElement("img");
-		thumb.setAttribute('src', imagePath);
-		thumb.setAttribute('start', start);
-		thumb.setAttribute('end', end);
-		thumb.setAttribute('class', 'thumbnail');
-		thumb.setAttribute('id', thumbId);
-		thumb.setAttribute('onclick', "previewVideo('" + thumbId + "', " + start + ", " + end + ")");
-		thumb.setAttribute('width', thumbnailWidth);
-
-		thumbnailContainer.appendChild(thumb);
-	};
-	//set youtube iFrame to be the same size
-	var videoPlayer = document.getElementById("player");
-	videoPlayer.setAttribute('width', thumbnailWidth);
-}
 
 function resetGifContainer () {
 	document.getElementById("gifContainer").innerHTML='<p id="loadingGif">Loading...<i class="fa fa-cog fa-spin fa-lg"></i></p>'; 
@@ -87,37 +99,14 @@ var showGif = function () {
 
 //---------------------------Click listeners-----------------------------
 
-function previewVideo(thumbId, start, end) {
-	thumb = document.getElementById(thumbId);
-	videoHeight = thumb.offsetHeight - 11;
-	
-	var bodyRect = document.documentElement.getBoundingClientRect(),
-    	elemRect = thumb.getBoundingClientRect(),
-    	topOffset = elemRect.top - bodyRect.top,
-    	leftOffset = elemRect.left - bodyRect.left;
-
-    var videoPlayer = document.getElementById("player");
-	videoPlayer.setAttribute('height', videoHeight);
-	videoPlayer.style.top = topOffset + "px";
-	videoPlayer.style.left = leftOffset + "px";
-	
-	var button = document.getElementById("outputGif");
-	button.style.top = topOffset + videoHeight/2 + "px";
-	button.style.left = leftOffset - 50 + "px";
-
-	videoPlayer.style.visibility = 'visible';
-	button.style.opacity = 1
-
-	loopVideo(start, end);
-}
-
 function loopVideo(start, end) {
+	player.mute();
   	clearInterval(timeupdater);
   	startTime = start;
   	endTime = end;
 	player.seekTo(start);
 	function updateTime () {
-		if (player.getPlayerState() == 1 & player.getCurrentTime() > end) {
+		if (player.getCurrentTime() > end) {
 			console.log("the video reached the end time!");
 			player.seekTo(start);
 		}
@@ -132,16 +121,41 @@ function outputGif() {
 	console.log ('endTime');
 	console.log (endTime);
 
+	if (endTime - startTime > maxGifLength) {
+		handleError("This clip is too long. Get the clip under 20 seconds, and then you can process it.");
+		return;
+	}
+
+	player.pauseVideo();
+
+
 	var gifBuilder = document.getElementById("gifBuilder");
 	resetGifContainer();
-	gifBuilder.style.height = "100%";
-	gifBuilder.style.opacity = 1;
 
-	createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
-	console.log("createGifUrl");
-	errorMessage = 'There was a problem. The gif could not be loaded.';
+	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	var errorMessage = 'There was a problem. The gif could not be loaded.';
 	handleRequest(createGifUrl, errorMessage, showGif);
 
+}
+
+function mask () {
+	console.log ('Masking...');
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/mask/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	var errorMessage = 'There was a problem. The mask could not be created.';
+	handleRequest(createGifUrl, errorMessage, showGif);
+}
+
+function loop1 () {
+	console.log ('Masking...');
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/loop1/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	var errorMessage = 'There was a problem. The mask could not be created.';
+	handleRequest(createGifUrl, errorMessage, showGif);
 }
 
 //---------------------------Asynch Helpers-----------------------------
@@ -165,6 +179,25 @@ function handleRequest (url, error, onloadCallback) {
 // does something with error messages
 function handleError (errorMessage) {
 	console.log(errorMessage);
-	document.getElementById("loading").innerHTML = "";
 	document.getElementById("error").innerHTML = errorMessage;
 }
+
+//---------------------------Helpers---------------------------
+
+function formatTime(seconds) {
+	var totalSec = seconds;
+	var hours = parseInt( totalSec / 3600 ) % 24;
+	var minutes = parseInt( totalSec / 60 ) % 60;
+	var seconds = parseInt(totalSec) % 60;
+	var millis = parseInt((totalSec % 1)*1000);
+
+	var result = (hours == 0 ? "" : hours + ":") + minutes + ":" + (seconds  < 10 ? "0" + seconds : seconds) + "." + millis
+	return result;
+}
+
+
+
+
+
+
+

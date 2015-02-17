@@ -2,12 +2,20 @@
 <html>
 <head>
 	<title>{{ videoId }}</title>
+
+	<!-- J Query UI -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+
+  	<!-- Custom style + CSS -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='um-videoHeadlines-demo.css') }}"></link>
 	<script src="{{ url_for('static', filename='authoringTool.js') }}"></script>
 	<script>
 	    init({{ videoId|tojson }});
 	</script>
 
+	<!-- Font Awesome -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
@@ -15,29 +23,36 @@
 <div class="container">	
 	<h1 id="thing">Select a scene</h1>
 
-	<iframe width="430" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0" frameborder="0" allowfullscreen id="player"></iframe>
-	<button id="outputGif" onclick="outputGif()">Output gif</button>
-	
-
-	<div id="error"></div>
-	<div id="loading">
-		Still processing the video for scenes...</br>
-		<i class="fa fa-cog fa-spin fa-5x"></i>
+	<div class="playerContainer" id="player-toggle-container">
+		<div id="error"></div>
+		<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&controls=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
+		<div id="controls">
+			<div id="slider-range"></div>
+			<p>
+			  <label for="start">Start time:</label>
+			  <input type="text" id="start" style="border:0; color:#f6931f; font-weight:bold;">
+			  <label for="end">End time:</label>
+			  <input type="text" id="end" style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+		</div>
+		<button id="outputGif" onclick="outputGif()">Output gif</button>
 	</div>
-	<div id="thumbnailContainer"></div>
 
-	<div class="container container" id="gifBuilder">
-		<p>Pick a different scene</p>
+	<div id="gifBuilder">
 		<h1>Edit your gif</h1>
 		<div class="col leftCol">
 			<div id="gifContainer"></div>
-			<div id="time">Adjust start and end time
-			</div>
 		</div>
 		<div class="col rightCol">
-			<div id="stabilization">Stabilization</div>
-			<div id="masking">Masking</div>
-			<div id="looping">Looping</div>
+			<div class="gifControls" id="stabilization">
+				Should I add stabilization?
+			</div>
+			<div class="gifControls" id="masking">
+				<button onclick="mask()">Demonstrate Masking</button>
+			</div>
+			<div class="gifControls" id="looping">
+				<button onclick="loop1()">Demonstrate Loop1</button>
+			</div>
 		</div>
 	</div>
 		

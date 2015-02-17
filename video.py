@@ -1,6 +1,7 @@
 import os, sys, io, json, subprocess
 from bs4 import BeautifulSoup
 from moviepy.editor import *
+import moviepy.video.tools.drawing as dw #for masking
 
 
 _STATIC_URL		= "http://localhost:5000/"
@@ -38,7 +39,7 @@ def download(videoId, url):
 	try:
 		response = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
 		print response
-		detectScenes(videoId)
+		# detectScenes(videoId)
 	except subprocess.CalledProcessError as e:
 		error = e.output #we probably want to log the errors somewhere for each file
 		print error
@@ -72,6 +73,12 @@ def detectScenes(videoId): #I think I need an error message system here....
 	os.system(cmd) #need to catch errors here I think
 	scenes = createJson(videoId, os.path.join(outputDir, "result.xml"))
 
+def time_symetrize(clip):
+	""" Returns the clip played forwards then backwards. In case
+	you are wondering, vfx (short for Video FX) is loaded by
+	>>> from moviepy.editor import * """
+	return concatenate([clip, clip.fx( vfx.time_mirror )])
+
 def processGif(videoId, start, end):
 	print "////////////////"
 	print "Processing gif..."
@@ -81,10 +88,56 @@ def processGif(videoId, start, end):
 		os.makedirs(outputDir)
 	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + ".gif"
 	gifPath = os.path.join(outputDir, gifName)
-	clip = (VideoFileClip(videoFile)
-			.subclip(float(start),float(end)))
+	clip = (VideoFileClip(videoFile, audio=False)
+			.subclip(float(start),float(end))
+			.resize(.4))
 	clip.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
+
+def maskGif(videoId, start, end):
+	print "////////////////"
+	print "Processing gif..."
+	videoFile = getVideoPath(videoId)
+	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + "--mask.gif"
+	gifPath = os.path.join(outputDir, gifName)
+	clip = (VideoFileClip(videoFile, audio=False)
+			.subclip(float(start),float(end))
+			.resize(.4)
+			.fx( time_symetrize ))
+	# coordinates p1,p2 define the edges of the mask
+	mask = dw.color_split(clip.size, p1=(245, 290), p2=(140, 0), grad_width=5) # blur the mask's edges
+	snapshot = (clip.to_ImageClip()
+			.set_duration(clip.duration)
+			.set_mask(ImageClip(mask, ismask=True)))
+	composition = CompositeVideoClip([clip,snapshot])
+	composition.write_gif(gifPath) # 'fuzz' (0-100) below is for gif compression
+	return os.path.join(_STATIC_URL, gifPath)
+
+def loop1(videoId, start, end):
+	print "////////////////"
+	print "Processing gif..."
+	videoFile = getVideoPath(videoId)
+	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + "--loop1.gif"
+	gifPath = os.path.join(outputDir, gifName)
+	clip = (VideoFileClip(videoFile, audio=False)
+			.subclip(float(start),float(end))
+			.resize(.4)
+			.fx( time_symetrize ))
+	clip.write_gif(gifPath)
+	return os.path.join(_STATIC_URL, gifPath)
+
+def fade1(videoId, start, end):
+	return os.path.join(_STATIC_URL, gifPath)
+
+def fade2(videoId, start, end):
+	return os.path.join(_STATIC_URL, gifPath)
+
 
 #-------------------------------------- getters -------------------------------------- 
 

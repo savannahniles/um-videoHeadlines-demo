@@ -29,6 +29,12 @@ def submitUrl():
 def authoringTool(videoId):
     return render_template('authoringTool.html', videoId=videoId)
 
+#the old way with the scene detection. Deprecating this
+@app.route('/authoringTool2/<videoId>')
+def authoringTool2(videoId):
+    return render_template('authoringTool2.html', videoId=videoId)
+
+
 @app.route('/authoringTool/sceneDetection/<videoId>')
 def sceneDetection(videoId):
     errorCode = 0
@@ -54,6 +60,39 @@ def makeGif(videoId):
     response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
     return json.dumps(response)
 
+@app.route('/authoringTool/mask/<videoId>', methods=['GET'])
+def mask(videoId):
+    errorCode = 0
+    start = request.args.get('start')
+    end = request.args.get('end')
+    gif = None
+    if (not start or not end):
+        # print ("no start or end time")
+        errorCode = "no start or end time"
+    else:
+        gif = video.maskGif(videoId, start, end);
+        if (not gif):
+            print ("no gif")
+            errorCode = "no gif"
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
+    return json.dumps(response)
+
+@app.route('/authoringTool/loop1/<videoId>', methods=['GET'])
+def loop1(videoId):
+    errorCode = 0
+    start = request.args.get('start')
+    end = request.args.get('end')
+    gif = None
+    if (not start or not end):
+        # print ("no start or end time")
+        errorCode = "no start or end time"
+    else:
+        gif = video.loop1(videoId, start, end);
+        if (not gif):
+            print ("no gif")
+            errorCode = "no gif"
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
+    return json.dumps(response)
 
 #this is just a little demo page
 @app.route('/ambient-implementations')

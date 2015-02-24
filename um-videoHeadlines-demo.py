@@ -94,6 +94,42 @@ def loop1(videoId):
     response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
     return json.dumps(response)
 
+@app.route('/authoringTool/fade1/<videoId>', methods=['GET'])
+def fade1(videoId):
+    errorCode = 0
+    start = request.args.get('start')
+    end = request.args.get('end')
+    gif = None
+    if (not start or not end):
+        # print ("no start or end time")
+        errorCode = "no start or end time"
+    else:
+        gif = video.fade1(videoId, start, end);
+        if (not gif):
+            print ("no gif")
+            errorCode = "no gif"
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
+    return json.dumps(response)
+
+
+@app.route('/authoringTool/fade2/<videoId>', methods=['GET'])
+def fade2(videoId):
+    errorCode = 0
+    start = request.args.get('start')
+    end = request.args.get('end')
+    gif = None
+    if (not start or not end):
+        # print ("no start or end time")
+        errorCode = "no start or end time"
+    else:
+        gif = video.fade2(videoId, start, end);
+        if (not gif):
+            print ("no gif")
+            errorCode = "no gif"
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
+    return json.dumps(response)
+
+
 #this is just a little demo page
 @app.route('/ambient-implementations')
 def ambientImplementations():

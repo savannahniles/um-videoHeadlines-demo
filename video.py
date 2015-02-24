@@ -108,7 +108,7 @@ def maskGif(videoId, start, end):
 			.resize(.4)
 			.fx( time_symetrize ))
 	# coordinates p1,p2 define the edges of the mask
-	mask = dw.color_split(clip.size, p1=(245, 290), p2=(140, 0), grad_width=5) # blur the mask's edges
+	mask = dw.color_split(clip.size, p1=(90, 0), p2=(90, 290), grad_width=5) # blur the mask's edges
 	snapshot = (clip.to_ImageClip()
 			.set_duration(clip.duration)
 			.set_mask(ImageClip(mask, ismask=True)))
@@ -133,9 +133,42 @@ def loop1(videoId, start, end):
 	return os.path.join(_STATIC_URL, gifPath)
 
 def fade1(videoId, start, end):
+	print "////////////////"
+	print "Processing gif..."
+	videoFile = getVideoPath(videoId)
+	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + "--fade1.gif"
+	gifPath = os.path.join(outputDir, gifName)
+	clip = (VideoFileClip(videoFile, audio=False)
+			.subclip(float(start),float(end))
+			.resize(.4))
+	d = clip.duration
+	clip = clip.crossfadein(d/2)
+	composition = (CompositeVideoClip([clip, clip.set_start(d/2), clip.set_start(d)]).subclip(d/2, 3*d/2))
+	composition.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
 
 def fade2(videoId, start, end):
+	print "////////////////"
+	print "Processing gif..."
+	videoFile = getVideoPath(videoId)
+	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
+	if not os.path.exists(outputDir):
+		os.makedirs(outputDir)
+	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + "--fade2.gif"
+	gifPath = os.path.join(outputDir, gifName)
+	clip = (VideoFileClip(videoFile, audio=False)
+			.subclip(float(start),float(end))
+			.resize(.4))
+	d = clip.duration
+	snapshot = (clip.to_ImageClip()
+            .set_duration(d/6)
+            .crossfadein(d/6)
+            .set_start(5*d/6))
+	composition = CompositeVideoClip([clip, snapshot])
+	composition.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
 
 

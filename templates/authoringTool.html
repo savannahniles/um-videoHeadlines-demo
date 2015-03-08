@@ -15,44 +15,49 @@
 	    init({{ videoId|tojson }});
 	</script>
 
-	<!-- Font Awesome -->
+	<!-- Font Awesome, google fonts -->
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Sniglet:400,800' rel='stylesheet' type='text/css'>
 
 </head>
 <body>
 <div class="container">	
-	<h1 id="thing">Select a scene</h1>
+	<h1 class="hover-highlight">Glyph</h1>
 
-	<div class="playerContainer" id="player-toggle-container">
-		<div id="error"></div>
-		<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&controls=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
-		<div id="controls">
-			<div id="slider-range"></div>
-			<p>
-			  <label for="start">Start time:</label>
-			  <input type="text" id="start" style="border:0; color:#f6931f; font-weight:bold;">
-			  <label for="end">End time:</label>
-			  <input type="text" id="end" style="border:0; color:#f6931f; font-weight:bold;">
-			</p>
-		</div>
-		<button id="outputGif" onclick="outputGif()">Output gif</button>
-	</div>
-
+	
 	<div id="gifBuilder">
-		<h1>Edit your gif</h1>
 		<div class="col leftCol">
-			<div id="gifContainer"></div>
-		</div>
+
+			<div class="playerContainer" id="player-toggle-container">
+
+				<div id="error"></div>
+				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&controls=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
+				
+				<div id="controls">
+					<div id="slider-range"></div>
+					<p>
+					  <label for="start">Start time:</label>
+					  <input type="text" id="start" autofocus>
+					  <label for="end">End time:</label>
+					  <input type="text" id="end" >
+					</p>
+					<div class="buttons">
+						<button onclick="mask()">Demonstrate Masking</button>
+						<button onclick="loop1()">Demonstrate Loop1</button>
+						<button onclick="fade1()">Demonstrate Fade1</button>
+						<button onclick="fade2()">Demonstrate Fade2</button>
+						<button id="outputGif" onclick="outputGif()">Output gif</button>
+					</div>
+					
+				</div> <!-- end controls -->
+
+			</div> <!-- end player container -->
+
+		</div> <!-- end left col -->
+
 		<div class="col rightCol">
-			<div class="gifControls" id="stabilization">
-				Should I add stabilization?
-			</div>
-			<div class="gifControls" id="masking">
-				<button onclick="mask()">Demonstrate Masking</button>
-			</div>
-			<div class="gifControls" id="looping">
-				<button onclick="loop1()">Demonstrate Loop1</button>
-			</div>
+			<div id="gifContainer"></div>
+			<h2 id="rightColTitle"></h2>
 		</div>
 	</div>
 		

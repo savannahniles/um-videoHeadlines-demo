@@ -29,105 +29,25 @@ def submitUrl():
 def authoringTool(videoId):
     return render_template('authoringTool.html', videoId=videoId)
 
-#the old way with the scene detection. Deprecating this
-@app.route('/authoringTool2/<videoId>')
-def authoringTool2(videoId):
-    return render_template('authoringTool2.html', videoId=videoId)
-
-
-@app.route('/authoringTool/sceneDetection/<videoId>')
-def sceneDetection(videoId):
-    errorCode = 0
-    scenes = video.getScenes(videoId)
-    videoPath = video.getVideoPath(videoId)
-    response = {'errorCode' : errorCode, 'videoPath': videoPath, 'scenes': scenes}
-    return json.dumps(response)
-
 @app.route('/authoringTool/makeGif/<videoId>', methods=['GET'])
 def makeGif(videoId):
     errorCode = 0
     start = request.args.get('start')
     end = request.args.get('end')
     gif = None
-    if (not start or not end):
-        # print ("no start or end time")
+    loop = request.args.get('loop')
+    mask = request.args.get('mask')
+    if (not start or not end): #check to make sure start and end are in the URL, change to None to avoid errors if not
         errorCode = "no start or end time"
+        start = 0
+        end = 0
     else:
-        gif = video.processGif(videoId, start, end);
-        if (not gif):
-            print ("no gif")
+        gif = video.processGif(videoId, start, end, loop, mask)
+        if (not gif): #check to see if there was a problema nd there's no gif
             errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'loop': loop, 'mask': mask, 'gif': gif}
     return json.dumps(response)
 
-@app.route('/authoringTool/mask/<videoId>', methods=['GET'])
-def mask(videoId):
-    errorCode = 0
-    start = request.args.get('start')
-    end = request.args.get('end')
-    gif = None
-    if (not start or not end):
-        # print ("no start or end time")
-        errorCode = "no start or end time"
-    else:
-        gif = video.maskGif(videoId, start, end);
-        if (not gif):
-            print ("no gif")
-            errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
-    return json.dumps(response)
-
-@app.route('/authoringTool/loop1/<videoId>', methods=['GET'])
-def loop1(videoId):
-    errorCode = 0
-    start = request.args.get('start')
-    end = request.args.get('end')
-    gif = None
-    if (not start or not end):
-        # print ("no start or end time")
-        errorCode = "no start or end time"
-    else:
-        gif = video.loop1(videoId, start, end);
-        if (not gif):
-            print ("no gif")
-            errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
-    return json.dumps(response)
-
-@app.route('/authoringTool/fade1/<videoId>', methods=['GET'])
-def fade1(videoId):
-    errorCode = 0
-    start = request.args.get('start')
-    end = request.args.get('end')
-    gif = None
-    if (not start or not end):
-        # print ("no start or end time")
-        errorCode = "no start or end time"
-    else:
-        gif = video.fade1(videoId, start, end);
-        if (not gif):
-            print ("no gif")
-            errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
-    return json.dumps(response)
-
-
-@app.route('/authoringTool/fade2/<videoId>', methods=['GET'])
-def fade2(videoId):
-    errorCode = 0
-    start = request.args.get('start')
-    end = request.args.get('end')
-    gif = None
-    if (not start or not end):
-        # print ("no start or end time")
-        errorCode = "no start or end time"
-    else:
-        gif = video.fade2(videoId, start, end);
-        if (not gif):
-            print ("no gif")
-            errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'gif': gif}
-    return json.dumps(response)
 
 
 #this is just a little demo page
@@ -142,3 +62,30 @@ if __name__ == '__main__':
     else:
         # app.run(port = int(sys.argv[1])) # run on the specified port number
         app.run(host = "0.0.0.0", port = int(sys.argv[1]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# #the old way with the scene detection. Deprecating this
+# @app.route('/authoringTool2/<videoId>')
+# def authoringTool2(videoId):
+#     return render_template('authoringTool2.html', videoId=videoId)
+
+# @app.route('/authoringTool/sceneDetection/<videoId>')
+# def sceneDetection(videoId):
+#     errorCode = 0
+#     scenes = video.getScenes(videoId)
+#     videoPath = video.getVideoPath(videoId)
+#     response = {'errorCode' : errorCode, 'videoPath': videoPath, 'scenes': scenes}
+#     return json.dumps(response)
+

@@ -76,7 +76,7 @@ function initSlider() {
 //---------------------------The place where shit gets built-----------------------------
 
 function resetGifContainer () {
-	document.getElementById("gifContainer").innerHTML='<p id="loadingGif">Loading...<i class="fa fa-cog fa-spin fa-lg"></i></p>'; 
+	document.getElementById("gifContainer").innerHTML='<p id="loadingGif"><i class="fa fa-spinner fa-spin fa-3x fa-fw margin-bottom"></i></br>Generating your gif...</p>'; 
 }
 
 var showGif = function () {
@@ -94,6 +94,7 @@ var showGif = function () {
 
 	gifContainer.innerHTML="";
 	gifContainer.appendChild(gif);
+	document.getElementById("rightColTitle").innerHTML = "Like it? Right click to save."
 	
 }
 
@@ -122,14 +123,15 @@ function outputGif() {
 	console.log (endTime);
 
 	if (endTime - startTime > maxGifLength) {
-		handleError("This clip is too long. Get the clip under 20 seconds, and then you can process it.");
+		handleError("This clip is too long. Get the clip under " + maxGifLength + " seconds, and then you can process it.");
 		return;
 	}
 
+	clearError ();
 	player.pauseVideo();
 
 
-	var gifBuilder = document.getElementById("gifBuilder");
+	// var gifBuilder = document.getElementById("gifBuilder");
 	resetGifContainer();
 
 	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
@@ -158,6 +160,26 @@ function loop1 () {
 	handleRequest(createGifUrl, errorMessage, showGif);
 }
 
+function fade1 () {
+	console.log ('Masking...');
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/fade1/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	var errorMessage = 'There was a problem. The mask could not be created.';
+	handleRequest(createGifUrl, errorMessage, showGif);
+}
+
+function fade2 () {
+	console.log ('Masking...');
+	var gifBuilder = document.getElementById("gifBuilder");
+	resetGifContainer();
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/fade2/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	var errorMessage = 'There was a problem. The mask could not be created.';
+	handleRequest(createGifUrl, errorMessage, showGif);
+}
+
 //---------------------------Asynch Helpers-----------------------------
 
 function handleRequest (url, error, onloadCallback) {
@@ -180,6 +202,10 @@ function handleRequest (url, error, onloadCallback) {
 function handleError (errorMessage) {
 	console.log(errorMessage);
 	document.getElementById("error").innerHTML = errorMessage;
+}
+
+function clearError () {
+	document.getElementById("error").innerHTML = "";
 }
 
 //---------------------------Helpers---------------------------

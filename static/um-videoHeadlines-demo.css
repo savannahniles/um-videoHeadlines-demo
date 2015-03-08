@@ -9,38 +9,115 @@ body {
 	padding: 0;
 }
 
-h1, h2 {
+.vertically-center {
+	position: relative;
+	top: 50%;
+	transform: translateY(50%);
+}
+
+h1 {
+  font-family: 'Sniglet', Avenir;
+  background: #8FDFF2;
+  color: white;
+  width: 300px;
+  padding: 10px;
+  font-size: 62px;
+  text-align: center;
+  margin: 0px;
+}
+
+h1.big-title {
+	background: url(http://i.imgur.com/axCGqvQ.gif);
+	width: 490px;
+	margin: 50px auto;
+	font-size: 105px;
+}
+
+h2 {
 	font-family: Avenir;
 	font-weight: lighter;
 	color: #8FDFF2;
 }
 
-.container {
-	width: 98%;
-	margin: 0px auto;
+*:focus {
+    outline: 0;
+}
+
+.hover-highlight:hover {
+	opacity: .65;
+	cursor: pointer;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-ms-transition: opacity .5s;
+	-o-transition: opacity .5s;
+	transition: opacity .5s;
+}
+
+.col {
+	width: 50%;
+	height: 100%;
+
 }
 
 .rightCol {
-	width: 50%;
-	height: 100%;
 	float: right;
 }
 
 .leftCol {
-	width: 50%;
-	height: 100%;
 	float: left;
+}
+
+/* Home page */
+
+#url-form {
+	width: 1000px;
+  	text-align: center;
+  	margin: 0px auto;
+}
+
+#url-form input[type='text'] {
+	width: 250px;
+	height: 30px;
+	font-size: 24px;
+	color: #dadada;
+	border: none;
+	border-bottom: 2px solid #8FDFF2;
+}
+
+#url-form button[type='submit'] {
+	border: none;
+	font-size: 24px;
+	color: #8FDFF2;
+	background: white;
+}
+
+#errors {
+	color: red;
 }
 
 /* Authoring tool */
 
 .playerContainer {
 	width: 560px;
+	margin-right: 20px;
+  	float: right;
+}
+
+#error {
+	position: absolute;
+  	background: white;
+}
+
+#player {
 	margin: 0px auto;
 }
 
-#player-toggle {
-	margin: 0px auto;
+#gifBuilder {
+	z-index: 1;
+	overflow: hidden;
+	padding: 20px 0;
+	margin: 20px auto;
+	min-width: 1200px;
 }
 
 .ui-slider-handle {
@@ -48,36 +125,35 @@ h1, h2 {
 	cursor: pointer;
 }
 
-#outputGif {
-	position: absolute;
-	cursor: pointer;
+#controls input[type='text'] {
+	width: 100px;
+	color: #8FDFF2;
 }
 
-#gifBuilder {
-	z-index: 1;
-	background: #eee;
-	overflow: hidden;
-	width: 1060px;
-	margin: 100px auto;
+#rightColTitle {
+	width: 560px;
+	margin-left: 20px;
+	font-size: 18px;
+  	margin-top: 5px;
 }
 
 #gifContainer {
-	height: 200px;
-	text-align: center;
+	height: 315px;
+	width: 560px;
+	margin-left: 20px;
+	border: 3px dashed #dadada;
 }
 
 #loadingGif {
-	height: 200px;
-	margin-top: 100px;
+	position: relative;
+  	top: 100px;
 	text-align: center;
+  	color: #8FDFF2;
+  	font-size: 18px;
 }
 
 .gif {
 	height: 100%;
-}
-
-.gifControls {
-	margin: 10px 0;
 }
 
 

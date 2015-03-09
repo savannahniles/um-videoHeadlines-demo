@@ -38,20 +38,23 @@
 					<div id="slider-range"></div>
 					<div class="help" id="slide-help">Drag each each end of the slider. <i class="fa fa-hand-o-right"></i></div>
 					<p>
-					  <label for="start"><i class="fa fa-pencil"></i> Start time:</label>
+					  <label for="start"> Start time: <i class="fa fa-pencil"></i></label>
 					  <input type="text" id="start" autofocus>
-					  <label for="end"><i class="fa fa-pencil"></i> End time:</label>
+					  <label for="end"> End time: <i class="fa fa-pencil"></i></label>
 					  <input type="text" id="end">
 					  <span class="help" id="time-help"><i class="fa fa-hand-o-left"> Click to edit.</i></span>
-					<p>
 					</p>
-					<div class="buttons">
-						<button onclick="mask()">Demonstrate Masking</button>
-						<button onclick="loop1()">Demonstrate Loop1</button>
-						<button onclick="fade1()">Demonstrate Fade1</button>
-						<button onclick="fade2()">Demonstrate Fade2</button>
-						<button id="outputGif" onclick="outputGif()">Output gif</button>
-					</div>
+				  <p id="loop">
+				    <input type="radio" value="time_symetrize" id="time_symetrize" name="loop">
+				    <label for="time_symetrize">Forewards/Backwards</label>
+				    <input type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
+				    <label for="progressive_fade">Progressive Fade</label>
+				    <input type="radio" value="still_fade" id="still_fade" name="loop">
+				    <label for="still_fade">Still Fade</label>
+				  </p>
+				  <p>
+				  	<button id="outputGif" onclick="outputGif()">Output gif</button>
+				  </p>
 					
 				</div> <!-- end controls -->
 

@@ -9,7 +9,7 @@ tag.src = "//www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube player(s) after the API code downloads.
 
-var player, startTime, endTime;
+var player, startTime, endTime, loop, mask;
 var timeupdater = null;
 var maxGifLength = 5;
 
@@ -23,6 +23,7 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(evt) {
     initSlider();
+
 }
 
 
@@ -30,14 +31,20 @@ function onPlayerReady(evt) {
 
 function init(id) {
 	videoId = id
+
+	//init radio buttons
+	$(function() {
+	    $( "#loop" ).buttonset();
+	});
+
 }
 
 //---------------------------JQuery UI slider-----------------------------
 
 function initSlider() {
 	$(function() {
-		startTime = 0;
-		endTime = 14.9;
+		startTime = 10.05;
+		endTime = 14.90;
 		var duration = player.getDuration();
 		var maxLength = 15;
 	    $( "#slider-range" ).slider({

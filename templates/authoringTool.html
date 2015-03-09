@@ -23,6 +23,7 @@
 <body>
 <div class="container">	
 	<h1 class="hover-highlight">Glyph</h1>
+	<div id="help-toggle"><i class="fa fa-lightbulb-o"></i> Click for tips.</div>
 
 	
 	<div id="gifBuilder">
@@ -35,11 +36,14 @@
 				
 				<div id="controls">
 					<div id="slider-range"></div>
+					<div class="help" id="slide-help">Drag each each end of the slider. <i class="fa fa-hand-o-right"></i></div>
 					<p>
-					  <label for="start">Start time:</label>
+					  <label for="start"><i class="fa fa-pencil"></i> Start time:</label>
 					  <input type="text" id="start" autofocus>
-					  <label for="end">End time:</label>
-					  <input type="text" id="end" >
+					  <label for="end"><i class="fa fa-pencil"></i> End time:</label>
+					  <input type="text" id="end">
+					  <span class="help" id="time-help"><i class="fa fa-hand-o-left"> Click to edit.</i></span>
+					<p>
 					</p>
 					<div class="buttons">
 						<button onclick="mask()">Demonstrate Masking</button>

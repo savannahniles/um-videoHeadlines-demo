@@ -9,10 +9,9 @@ tag.src = "//www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube player(s) after the API code downloads.
 
-var player, startTime, endTime, clipLength;
-var endTimeLocked = false;
+var player, startTime, endTime;
 var timeupdater = null;
-var maxGifLength = 5; //very important: you also need to change this in the html 
+var maxGifLength = 5;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player-toggle', {
@@ -37,73 +36,39 @@ function init(id) {
 
 function initSlider() {
 	$(function() {
-		startTime = 10;
+		startTime = 0;
 		endTime = 14.9;
-		clipLength = 2;
 		var duration = player.getDuration();
-	    $( "#slider" ).slider({
+		var maxLength = 15;
+	    $( "#slider-range" ).slider({
+	      range: true,
 	      min: 0,
 	      max: duration,
-	      step: .01,
-	      value: startTime,
+	      maxRange: maxLength,
+	      step: .001,
+	      values: [ startTime, endTime ],
 	      slide: function(event, ui) {
-	      	startTime = ui.value;
-	      	$( "#start" ).val(startTime);
-	      	handleStartTimeChange();
+            startTime = ui.values[0];
+	      	endTime = ui.values[1]
+	        $( "#start" ).val(startTime);
+	        $( "#end" ).val(endTime);
+	        loopVideo(startTime, endTime); 
 	      }
 	    });
 	    $( "#start" ).val(startTime);
 	    $( "#end" ).val(endTime);
-	    $( "#clipLength" ).val(clipLength);
-
-	    // Listeners for changes in the input boxes //
 
 	    $( "#start" ).change(function() {
-	    	startTime = parseFloat($(this).val());
-	    	$( "#slider-range" ).slider( "value", startTime );
-	    	handleStartTimeChange();
-
+	    	startTime = $(this).val();
+		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+		    loopVideo(startTime, endTime);
 		});
-	    $( "#clipLength" ).change(function() {
-	    	clipLength = parseFloat($(this).val());
-	    	if (endTimeLocked == true) {
-	    		startTime = endTime - clipLength;
-	    		$( "#start" ).val(startTime);
-	    	}
-	    	else {
-	    		endTime = startTime + clipLength;
-	    		$( "#end" ).val(endTime);
-	    	}
-	    	loopVideo(startTime, endTime);
+	    $( "#end" ).change(function() {
+	    	endTime = $(this).val();
+		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+		    loopVideo(startTime, endTime);
 		});
-	});
 
-	function handleStartTimeChange () { //helper to handle start time changes
-		if (startTime > endTime) {
-			endTimeLocked = false;
-			clipLength = 2;
-			$( "#clipLength" ).val(clipLength);
-		}
-	    if (endTimeLocked == true) {
-	    	clipLength = endTime - startTime
-	    	$( "#clipLength" ).val(clipLength);
-	    }
-	    else {
-	    	endTime = startTime + clipLength;
-	    	$( "#end" ).val(endTime);
-	    }
-	    loopVideo(startTime, endTime);
-	}
-
-	document.getElementById("lock").addEventListener("click", function(){
-	    if (endTimeLocked == true) {
-	    	endTimeLocked = false;
-	    	document.getElementById("lock").innerHTML = '<i class="fa fa-lock"></i>';
-	    }
-	    else {
-	    	endTimeLocked = true;
-	    	document.getElementById("lock").innerHTML = '<i class="fa fa-unlock-alt"></i>';
-	    }
 	});
 
 }

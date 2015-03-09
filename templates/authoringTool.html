@@ -34,17 +34,12 @@
 				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&controls=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
 				
 				<div id="controls">
-					<div id="slider"></div>
+					<div id="slider-range"></div>
 					<p>
-					  <label for="start"><i class="fa fa-pencil"></i> Start time:</label>
+					  <label for="start">Start time:</label>
 					  <input type="text" id="start" autofocus>
-					  <label for="clipLendgh"><i class="fa fa-pencil"></i> Clip Duration:</label>
-					  <input type="text" id="clipLength">
-					</p>
-					<p>
 					  <label for="end">End time:</label>
-					  <input type="text" id="end" disabled>
-					  <label for="end" id="lock"><i class="fa fa-unlock-alt"></i></label>
+					  <input type="text" id="end" >
 					</p>
 					<div class="buttons">
 						<button onclick="mask()">Demonstrate Masking</button>

@@ -121,23 +121,13 @@ h2 {
 }
 
 .ui-slider-handle {
-	/*opacity: 0;*/
+	opacity: 0;
 	cursor: pointer;
 }
 
-#controls label {
-	background: #8FDFF2;
-	color: white;
-	padding: 0px 5px;
-}
-
-#start, #clipLength, #end {
-	width: 50px;
-	font-size: 12px;
-}
-
-#end {
-	color: rgb(158, 158, 158);
+#controls input[type='text'] {
+	width: 100px;
+	color: #8FDFF2;
 }
 
 #rightColTitle {

@@ -26,7 +26,7 @@ Then install python dependencies in your virtual environment:
 pip install flask moviepy beautifulsoup4
 ```
 
-3. Then just run:
+Then just run:
 
 ```
 python um-videoHeadlines-demo.py 5000

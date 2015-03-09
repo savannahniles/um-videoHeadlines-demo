@@ -4,7 +4,7 @@ from moviepy.editor import *
 import moviepy.video.tools.drawing as dw #for masking
 
 
-_STATIC_URL		= "http://localhost:5000/"
+_STATIC_URL		= "/"
 _STATIC_BASE	= "static/video/"
 
 def getVideoInfo(url):

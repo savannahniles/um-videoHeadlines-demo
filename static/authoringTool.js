@@ -1,6 +1,6 @@
 //---------------------------Load the video-----------------------------
 
-var _STATIC_URL = "http://localhost:5000/";
+var _STATIC_URL = "/";
 var videoId;
 
 //download YouTube player API

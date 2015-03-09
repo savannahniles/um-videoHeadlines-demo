@@ -32,6 +32,7 @@
 			<div class="playerContainer" id="player-toggle-container">
 
 				<div id="error"></div>
+				<div id="mask-button">Mask editor</div>
 				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&controls=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
 				
 				<div id="controls">
@@ -45,15 +46,20 @@
 					  <span class="help" id="time-help"><i class="fa fa-hand-o-left"> Click to edit.</i></span>
 					</p>
 				  <p id="loop">
-				    <input type="radio" value="time_symetrize" id="time_symetrize" name="loop">
+				  	<label> Looping: </label>
+				    <input class="loopButton" type="radio" value="time_symetrize" id="time_symetrize" name="loop">
 				    <label for="time_symetrize">Forewards/Backwards</label>
-				    <input type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
+				    <input class="loopButton" type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
 				    <label for="progressive_fade">Progressive Fade</label>
-				    <input type="radio" value="still_fade" id="still_fade" name="loop">
+				    <input class="loopButton" type="radio" value="still_fade" id="still_fade" name="loop">
 				    <label for="still_fade">Still Fade</label>
+				    <input class="loopButton" type="radio" value="standard" id="standard" name="loop" checked="checked">
+				    <label for="standard">Standard</label>
+				    <span class="help" id="loop-help"><i class="fa fa-hand-o-left"> Click to play around with these.</i></span>
 				  </p>
-				  <p>
-				  	<button id="outputGif" onclick="outputGif()">Output gif</button>
+				  <p id= "outputP" class="align-right">
+				  	<span class="help" id="output-help"><i class="fa fa-hand-o-down"> Make your Gif.</i></span>
+				  	<button id="outputGif" class="hover-highlight" onclick="outputGif()"><i class=" fa-hand-o-right fa fa-lg"></i></button>
 				  </p>
 					
 				</div> <!-- end controls -->

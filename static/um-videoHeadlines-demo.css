@@ -53,6 +53,10 @@ h2 {
 	transition: opacity .5s;
 }
 
+.align-right {
+	text-align: right;
+}
+
 .col {
 	width: 50%;
 	height: 100%;
@@ -120,9 +124,16 @@ h2 {
 	min-width: 1200px;
 }
 
-.ui-slider-handle {
+#mask-button {
+	position: absolute;
+	width: 560px;
+	background: #04C7FF;
+	color: white;
+}
+
+.ui-slider .ui-slider-handle {
 	opacity: 0;
-	cursor: pointer;
+	cursor: col-resize;
 }
 
 .ui-slider-range {
@@ -136,16 +147,35 @@ h2 {
 #start, #end {
 	width: 50px;
 	font-size: 12px;
+	font-family: 'Avenir';
 	color: #04C7FF;
 
 }
 
 .ui-buttonset .ui-button {
 	border-radius: 0px;
+	background: #fff;
+  	margin-right: 3px;
 }
 
-.ui-button-text {
-	font-size: 14px;
+.ui-buttonset .ui-state-active {
+	background: #04C7FF;
+	color: white;
+	border: 1px solid #04C7FF;
+}
+
+.ui-button-text{
+	font-size: 12px;
+	font-family: 'Avenir';
+}
+
+
+#outputGif {
+	border: none;
+	background: none;
+	font-size: 24px;
+	color: #04C7FF;
+	cursor: pointer;
 }
 
 #rightColTitle {
@@ -194,6 +224,16 @@ h2 {
   width: 82px;
   top: -50px;
   left: -80px;
+}
+
+#loop-help {
+	position: absolute;
+}
+
+#output-help {
+	position: relative;
+	top: -35px;
+	right: -100px;
 }
 
 

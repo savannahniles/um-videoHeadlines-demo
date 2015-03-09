@@ -9,7 +9,7 @@ tag.src = "//www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube player(s) after the API code downloads.
 
-var player, startTime, endTime, loop, mask;
+var player, startTime, endTime;
 var timeupdater = null;
 var maxGifLength = 5;
 
@@ -30,12 +30,8 @@ function onPlayerReady(evt) {
 //---------------------------Set the page up (content + listeners)-----------------------------
 
 function init(id) {
-	videoId = id
-
-	//init radio buttons
-	$(function() {
-	    $( "#loop" ).buttonset();
-	});
+	videoId = id;
+	initLoopButtons();
 
 }
 
@@ -78,6 +74,32 @@ function initSlider() {
 
 	});
 
+}
+
+//---------------------------JQuery UI buttonset for loops -----------------------------
+
+function initLoopButtons () {
+	//init radio buttons
+	$(function() {
+	    $( "#loop" ).buttonset();
+	});
+
+}
+
+function getLoopVal() {
+    var val = "";
+    // get list of radio buttons with specified name
+    var radios = document.getElementsByClassName("loopButton");
+    console.log (radios);
+    
+    // loop through list of radio buttons
+    for (var i=0, len=radios.length; i<len; i++) {
+        if ( radios[i].checked ) { // radio checked?
+            val = radios[i].value; // if so, hold its value in val
+            break; // and break out of for loop
+        }
+    }
+    return val; // return value of checked radio or undefined if none checked
 }
 
 //---------------------------The place where shit gets built-----------------------------
@@ -129,6 +151,7 @@ function outputGif() {
 	console.log ('endTime');
 	console.log (endTime);
 
+	//check length of gif
 	if (endTime - startTime > maxGifLength) {
 		handleError("This clip is too long. Get the clip under " + maxGifLength + " seconds, and then you can process it.");
 		return;
@@ -141,7 +164,14 @@ function outputGif() {
 	// var gifBuilder = document.getElementById("gifBuilder");
 	resetGifContainer();
 
-	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime;
+	//get loop value
+	var loop = getLoopVal();
+
+	//get mask value
+	var mask = "";
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime + '&loop=' + loop + '&mask=' + mask;
+	console.log (createGifUrl);
 	var errorMessage = 'There was a problem. The gif could not be loaded.';
 	handleRequest(createGifUrl, errorMessage, showGif);
 

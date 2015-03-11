@@ -77,38 +77,29 @@ img {
 }
 
 #tokens1 {
-	left: 156px;
-	top: 185px;
-	position: absolute;
-	width: 345px;
-	-webkit-transform: rotateZ(-39deg);
-	z-index: -1;
+	left: 232px;
+	  top: 212px;
+	  position: absolute;
+	  width: 132px;
+	  -webkit-transform: rotateZ(-34deg);
+	  z-index: -1;
 }
-/*
-#tokens1 {
-	left: 128px;
-	top: 243px;
-	position: absolute;
-	width: 238px;
-	-webkit-transform: rotateZ(-39deg);
-	z-index: -1;
-}*/
 
 #tokens2 {
-	left: 254px;
-	top: 40px;
+	left: 277px;
+	top: 53px;
 	position: absolute;
-	width: 156px;
+	width: 123px;
 	z-index: -2;
 }
 
 #bedroom {
-	left: 257px;
-	top: 224px;
-	position: absolute;
-	width: 277px;
-	-webkit-transform: rotateY(-56deg);
-	z-index: -1;
+  left: 349px;
+  top: 253px;
+  position: absolute;
+  width: 60px;
+  -webkit-transform: rotateY(-56deg);
+  z-index: -1;
 }
 
 #deskCup {
@@ -121,9 +112,9 @@ img {
 }
 
 #watch {
-	left: 207px;
-	top: 148px;
+	left: 215px;
+	top: 151px;
 	position: absolute;
-	width: 277px;
+	width: 215px;
 	z-index: -1;
 }

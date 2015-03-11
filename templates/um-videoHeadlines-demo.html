@@ -3,6 +3,9 @@
 	<head>
 		<title>Video Headlines Demo</title>
 
+		<!-- JQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 		<link rel="stylesheet" href="{{ url_for('static', filename='um-videoHeadlines-demo.css') }}"></link>
 		<script src="{{ url_for('static', filename='um-videoHeadlines-demo.js') }}"></script>
 
@@ -12,7 +15,16 @@
 
 	</head>
 	<body class="vertically-center">
-		<h1 class = "big-title hover-highlight">Glyph</h1>
+		<h1 id="image-h1" class = "big-title hover-highlight">Glyph</h1>
+		<script type="text/javascript">
+
+		gifs = ["http://i.imgur.com/IrGP7r4.gif", "http://i.imgur.com/IsoZbAq.gif", "http://i.imgur.com/axCGqvQ.gif", "http://i.imgur.com/Pf5J48l.gif", "http://i.imgur.com/e3Rujqg.gif", "http://i.imgur.com/lJWpWuH.gif", "http://i.imgur.com/afm1bAE.gif", "http://i.imgur.com/QWNW9Wv.gif"];
+		var gif = gifs[Math.floor(Math.random() * gifs.length)];
+		console.log(gif);
+
+		$('#image-h1').css({'background-image': 'url(' + gif + ')'});
+
+		</script>
 		<h2 id="url-form">
 			<div id="errors">
 				{{ request.args.get('error', '') }}

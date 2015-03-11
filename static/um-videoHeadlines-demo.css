@@ -17,7 +17,7 @@ body {
 
 h1 {
   font-family: 'Sniglet', Avenir;
-  background: #04C7FF;
+  /*background: #04C7FF;*/
   color: white;
   width: 300px;
   padding: 10px;
@@ -27,7 +27,7 @@ h1 {
 }
 
 h1.big-title {
-	background: url(http://i.imgur.com/axCGqvQ.gif);
+	/*background: url(http://i.imgur.com/axCGqvQ.gif);*/
 	width: 490px;
 	margin: 50px auto;
 	font-size: 105px;

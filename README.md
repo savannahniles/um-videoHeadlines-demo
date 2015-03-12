@@ -23,7 +23,7 @@ First nstall OpenCV, ffmpeg, and Imagemagik on your system. You can use Homebrew
 Then install python dependencies in your virtual environment:
 
 ```
-pip install flask moviepy beautifulsoup4
+pip install flask moviepy beautifulsoup4 youtube-dl
 ```
 
 Then just run:
@@ -33,5 +33,6 @@ python um-videoHeadlines-demo.py 5000
 ```
 
 You might get an error about a failure to import cv2. MoviePy requires cv2 to run and is the one calling it. You should link your Python wrapper to the Python you're running via your vitural environment. 
-
+——— cd /usr/local/um/glyph/lib/python2.7/site-packages/
+——— ln -s /usr/local/lib/python2.7/dist-packages/cv* .
 

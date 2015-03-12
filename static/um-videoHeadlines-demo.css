@@ -17,7 +17,7 @@ body {
 
 h1 {
   font-family: 'Sniglet', Avenir;
-  /*background: #04C7FF;*/
+  background: #04C7FF;
   color: white;
   width: 300px;
   padding: 10px;
@@ -31,6 +31,8 @@ h1.big-title {
 	width: 490px;
 	margin: 50px auto;
 	font-size: 105px;
+	background: white;
+
 }
 
 h2 {

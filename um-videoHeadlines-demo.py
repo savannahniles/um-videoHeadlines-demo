@@ -51,8 +51,8 @@ def makeGif(videoId):
 
 
 #this is just a little demo page
-@app.route('/ambient-implementations')
-def ambientImplementations():
+@app.route('/splintered_screens')
+def splintered_screens():
     return render_template('ambient-implementations.html')
 
 

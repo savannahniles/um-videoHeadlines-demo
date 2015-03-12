@@ -83,7 +83,7 @@ def processGif(videoId, start, end, loop, mask):
 		print "masking...."
 		p = mask.split(',')
 		# coordinates p1,p2 define the edges of the mask
-		clipMask = dw.color_split(clip.size, p1=(200, 0), p2=(201, 288), grad_width=5) # blur the mask's edges
+		clipMask = dw.color_split(clip.size, p1=(301, 208), p2=(305, 0), grad_width=5) # blur the mask's edges
 		snapshot = (clip.to_ImageClip()
 				.set_duration(d)
 				.set_mask(ImageClip(clipMask, ismask=True)))

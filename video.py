@@ -34,7 +34,6 @@ def download(videoId, url):
 	print "////////////////"
 	print "Downloading video..."
 	videoPath = getVideoPath(videoId)
-	# videoPath = os.path.join(_STATIC_BASE, videoId, videoId + '.mp4')
 	cmd = 'youtube-dl --recode-video mp4 -o ' + videoPath + ' ' + url
 	try:
 		response = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
@@ -43,6 +42,15 @@ def download(videoId, url):
 	except subprocess.CalledProcessError as e:
 		error = e.output #we probably want to log the errors somewhere for each file
 		print error
+
+def createThumbnail(videoId, time, startOrEnd):
+	print "////////////////"
+	print "Processing thumbnail..."
+	videoFile = getVideoPath(videoId)
+	thumbnailPath = os.path.join(_STATIC_BASE, videoId, startOrEnd + ".png" )
+	clip = VideoFileClip(videoFile, audio=False)
+	clip.save_frame(thumbnailPath, t=float(time)) # saves the frame a t=2s
+	return os.path.join(_STATIC_URL, thumbnailPath)
 
 def time_symetrize(clip):
 	""" Returns the clip played forwards then backwards. In case
@@ -83,7 +91,7 @@ def processGif(videoId, start, end, loop, mask):
 		print "masking...."
 		p = mask.split(',')
 		# coordinates p1,p2 define the edges of the mask
-		clipMask = dw.color_split(clip.size, p1=(301, 208), p2=(305, 0), grad_width=5) # blur the mask's edges
+		clipMask = dw.color_split(clip.size, p1=(301, 208), p2=(305, 0), col1=1, col2=0, grad_width=50) # blur the mask's edges
 		snapshot = (clip.to_ImageClip()
 				.set_duration(d)
 				.set_mask(ImageClip(clipMask, ismask=True)))

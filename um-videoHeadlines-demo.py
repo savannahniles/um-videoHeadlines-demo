@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for     # for running the Flask server
 import sys                                                               # for obtaining command line arguments
 import json
+import time
 
 #helper functions
 import video
@@ -48,12 +49,37 @@ def makeGif(videoId):
     response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'loop': loop, 'mask': mask, 'gif': gif}
     return json.dumps(response)
 
+#route to generate a thumbnail
+@app.route('/authoringTool/makeThumbnails/<videoId>', methods=['GET'])
+def makeThumbnails(videoId):
+    errorCode = 0
+    start = request.args.get('start')
+    end = request.args.get('end')
+    startThumb = None
+    endThumb = None
+    ts = str(time.time())
+    if (not start or not end): #check to make sure start and end are in the URL, change to None to avoid errors if not
+        errorCode = "no start or end time"
+        start = 0
+        end = 0
+    else:
+        startThumb = video.createThumbnail(videoId, start, "start") + "?time=" + ts
+        endThumb = video.createThumbnail(videoId, end, "end") + "?time=" + ts
+        if (not startThumb or not endThumb): #check to see if there was a problema nd there's no gif
+            errorCode = "no thumbnails"
+    response = {'errorCode' : errorCode, 'startThumb': startThumb, 'endThumb': endThumb}
+    return json.dumps(response)
 
 
 #this is just a little demo page
 @app.route('/splintered_screens')
 def splintered_screens():
     return render_template('ambient-implementations.html')
+
+#this is just a little demo page
+@app.route('/100k')
+def hundred():
+    return render_template('ambient-implementations2.html')
 
 
 if __name__ == '__main__':

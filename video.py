@@ -58,17 +58,20 @@ def time_symetrize(clip):
 	>>> from moviepy.editor import * """
 	return concatenate([clip, clip.fx( vfx.time_mirror )])
 
-def processGif(videoId, start, end, loop, mask):
+def mask_outsideRegion(clip):
+	return clip.fx(vfx.freeze_region, outside_region=(200, 200, 379, 322))
+
+def processGif(videoId, start, end, loop, maskType, mask):
 	print "////////////////"
 	print "Processing gif..."
 
 	videoFile = getVideoPath(videoId)
-	gifPath = getGifPath(videoId, start, end, loop, mask)
+	gifPath = getGifPath(videoId, start, end, loop, maskType, mask)
 	print gifPath
 
 	clip = (VideoFileClip(videoFile, audio=False)
 			.subclip(float(start),float(end))
-			.resize(.4))
+			.resize(width=600))
 	composition = clip
 	d = clip.duration
 
@@ -87,15 +90,22 @@ def processGif(videoId, start, end, loop, mask):
 		composition = CompositeVideoClip([clip, snapshot])
 
 	#deal with masking
-	if (mask):
-		print "masking...."
+	if (maskType):
 		p = mask.split(',')
-		# coordinates p1,p2 define the edges of the mask
-		clipMask = dw.color_split(clip.size, p1=(301, 208), p2=(305, 0), col1=1, col2=0, grad_width=50) # blur the mask's edges
+	if (maskType == 'split'):
+		clipMask = dw.color_split(clip.size, p1=(float(p[0]), float(p[1])), p2=(float(p[2]), float(p[3])), col1=1, col2=0, grad_width=5) # blur the mask's edges
 		snapshot = (clip.to_ImageClip()
 				.set_duration(d)
 				.set_mask(ImageClip(clipMask, ismask=True)))
 		composition = CompositeVideoClip([composition,snapshot])
+	if (maskType == 'outer'):
+		composition = clip.fx(vfx.freeze_region, outside_region=(p[0], p[1], p[2], p[3]))
+	if (maskType == 'inner'):
+		freeze = (clip.fx(vfx.crop, x1=p[0], y1=p[1], x2=p[2], y2=p[3])
+				.to_ImageClip(t=0)
+				.set_duration(clip.duration)
+				.set_position((p[0],p[1])))
+		composition = CompositeVideoClip([clip, freeze])
 
 	composition.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
@@ -113,15 +123,15 @@ def getVideoPath(videoId):
 	videoFile = os.path.join(_STATIC_BASE, videoId, videoId + '.mp4')
 	return videoFile
 
-def getGifPath(videoId, start, end, loop, mask): #returns shots
+def getGifPath(videoId, start, end, loop, maskType, mask): #returns shots
 	outputDir = os.path.join(_STATIC_BASE, videoId, "gifs") #output for everything here
 	if not os.path.exists(outputDir):
 		os.makedirs(outputDir)
 	gifOptions = ""
 	if loop:
 		gifOptions = "--" + loop
-	if mask:
-		gifOptions = gifOptions + "--mask" + mask
+	if maskType:
+		gifOptions = gifOptions + "--" + maskType + "_mask" + mask
 	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + gifOptions + ".gif"
 	gifPath = os.path.join(outputDir, gifName)
 	return gifPath

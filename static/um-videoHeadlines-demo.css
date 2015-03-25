@@ -72,7 +72,7 @@ h2 {
 
 .rightCol {
 	float: right;
-	border: 1px solid purple;
+	background: lightblue;
 }
 
 .leftCol {

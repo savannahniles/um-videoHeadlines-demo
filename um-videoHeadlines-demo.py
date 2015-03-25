@@ -37,16 +37,17 @@ def makeGif(videoId):
     end = request.args.get('end')
     gif = None
     loop = request.args.get('loop')
+    maskType = request.args.get('maskType')
     mask = request.args.get('mask')
     if (not start or not end): #check to make sure start and end are in the URL, change to None to avoid errors if not
         errorCode = "no start or end time"
         start = 0
         end = 0
     else:
-        gif = video.processGif(videoId, start, end, loop, mask)
+        gif = video.processGif(videoId, start, end, loop, maskType, mask)
         if (not gif): #check to see if there was a problema nd there's no gif
             errorCode = "no gif"
-    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'loop': loop, 'mask': mask, 'gif': gif}
+    response = {'errorCode' : errorCode, 'videoId': videoId, 'start': float(start), 'end': float(end), 'loop': loop, 'maskType': maskType, 'mask': mask, 'gif': gif}
     return json.dumps(response)
 
 #route to generate a thumbnail

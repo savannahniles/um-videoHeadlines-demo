@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='um-videoHeadlines-demo.css') }}"></link>
 	<script src="{{ url_for('static', filename='authoringTool.js') }}"></script>
 	<script>
-	    init({{ videoId|tojson }});
+	    init({{ videoId|tojson }}); //this allows us to access id from server
 	</script>
 
 	<!-- Font Awesome, google fonts -->
@@ -22,20 +22,35 @@
 </head>
 <body>
 <div class="container">	
+	<!-- Header -->
 	<h1 class="hover-highlight">Glyph</h1>
 	<div id="help-toggle"><i class="fa fa-lightbulb-o"></i> Click for tips.</div>
 
-	
-	<div id="gifBuilder">
-		<div onClick="focusLeft()" class="col leftCol">
+
+
+	<div id="gifBuilder"> <!-- region where the gif is built and displayed -->
+		<div class="col leftCol"> <!-- left col for building -->
 			
-			<div class="keyframeContainer"><div class="keyframe dotted" id="startFrame"></div>Start frame</div>
+			<div class="keyframeContainer"><div class="keyframe dotted" id="startFrame"></div>Start frame</div> 
+
+			<!-- holds the player and controls, everything except the key frames -->
 			<div class="playerContainer" id="player-toggle-container">
 
-				<div id="error"></div>
-				<div id="mask-button">Mask editor</div>
+				<div id="error"></div> <!-- errors in gif size displayed here for now -->
+				
+				<!-- mask editor -->
+				<div id="mask-button" class="mask-button hover-highlight" onclick="maskButtonClicked()">Mask editor</div>
+				<div id="split-mask-button" class="mask-button hover-highlight hide-mask-button" onclick="splitMaskButtonClicked()">Split Mask</div>
+				<div id="region-mask-button" class="mask-button hover-highlight hide-mask-button" onclick="regionMaskButtonClicked()">Region Mask</div>
+				</br>
+				<canvas class="mask-canvas mask-hidden" id="split-mask" width="560" height="315"></canvas>
+				<canvas class="mask-canvas mask-hidden" id="region-mask" width="560" height="315"></canvas>
+
+
+				<!-- the iFrame -->
 				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
 				
+				<!-- the bottom controls -->
 				<div id="controls">
 					<div id="slider-range"></div>
 					<p>
@@ -47,15 +62,15 @@
 				  <p id="loop">
 				  	<label> Looping: </label>
 				    <input class="loopButton" type="radio" value="time_symetrize" id="time_symetrize" name="loop">
-				    <label for="time_symetrize">Forewards/Backwards</label>
+				    	<label for="time_symetrize">Forewards/Backwards</label>
 				    <input class="loopButton" type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
-				    <label for="progressive_fade">Progressive Fade</label>
+				    	<label for="progressive_fade">Progressive Fade</label>
 				    <input class="loopButton" type="radio" value="still_fade" id="still_fade" name="loop">
-				    <label for="still_fade">Still Fade</label>
+				    	<label for="still_fade">Still Fade</label>
 				    <input class="loopButton" type="radio" value="standard" id="standard" name="loop" checked="checked">
-				    <label for="standard">Standard</label>
+				    	<label for="standard">Standard</label>
 				  </p>
-				  <p id= "outputP" class="align-right">
+				  <p id= "outputP" class="align-right"> <!-- output button -->
 				  	<button id="outputGif" class="hover-highlight" onclick="outputGif()"><i class=" fa-hand-o-right fa fa-lg"></i></button>
 				  </p>
 					
@@ -65,7 +80,7 @@
 			<div class="keyframeContainer"><div class="keyframe dotted" id="endFrame"></div>End frame</div>
 		</div> <!-- end left col -->
 
-		<div onClick="focusRight()" class="col rightCol">
+		<div onClick="focusRight()" class="col rightCol"> <!-- right col for displyaing gif -->
 			<div class="dotted" id="gifContainer"></div>
 			<h2 id="rightColTitle"></h2>
 		</div>

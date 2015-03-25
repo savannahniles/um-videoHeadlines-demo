@@ -33,7 +33,77 @@ function onPlayerReady(evt) {
 function init(id) {
 	videoId = id;
 	initLoopButtons();
+	$('document').ready(function(){
+		buildSplitMaskCanvas();
+	});
 
+}
+
+//---------------------------Set up mask canvases-----------------------------
+
+function buildSplitMaskCanvas () {
+	var canvas = document.getElementById('region-mask'),
+    ctx = canvas.getContext('2d'),
+    rect = {},
+    drag = false;
+
+	function draw() {
+	  ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
+	}
+
+	function getMousePos(canvas, evt) {
+		var rect = canvas.getBoundingClientRect();
+		return {
+		  x: evt.clientX - rect.left,
+		  y: evt.clientY - rect.top
+		};
+	}
+
+	function mouseDown(e) {
+	  // rect.startX = e.pageX - this.offsetLeft;
+	  // rect.startY = e.pageY - this.offsetTop;
+	  rect.startX = getMousePos(canvas, e).x;
+	  rect.startY = getMousePos(canvas, e).y;
+	  drag = true;
+	}
+
+	function mouseUp() {
+	  drag = false;
+	}
+
+	function mouseMove(e) {
+	  if (drag) {
+	    rect.w = (e.pageX - this.offsetLeft) - rect.startX;
+	    rect.h = (e.pageY - this.offsetTop) - rect.startY ;
+	    ctx.clearRect(0,0,canvas.width,canvas.height);
+	    draw();
+	  }
+	}
+
+	function init() {
+	  canvas.addEventListener('mousedown', mouseDown, false);
+	  canvas.addEventListener('mouseup', mouseUp, false);
+	  canvas.addEventListener('mousemove', mouseMove, false);
+	}
+
+	init();
+}
+
+function maskButtonClicked () {
+	$( "#split-mask-button" ).toggleClass( "hide-mask-button" );
+	$( "#region-mask-button" ).toggleClass( "hide-mask-button" );
+	$( "#region-mask" ).addClass( "mask-hidden" );
+	$( "#split-mask" ).addClass( "mask-hidden" );
+}
+
+function splitMaskButtonClicked () {
+	$( "#region-mask" ).addClass( "mask-hidden" );
+	$( "#split-mask" ).toggleClass( "mask-hidden" );
+}
+
+function regionMaskButtonClicked () {
+	$( "#split-mask" ).addClass( "mask-hidden" );
+	$( "#region-mask" ).toggleClass( "mask-hidden" );
 }
 
 //---------------------------JQuery UI slider-----------------------------
@@ -80,7 +150,7 @@ function initSlider() {
 
 }
 
-//---------------------------Thumbnails & youtube preview looping -----------------------------
+//---------------------------Thumbnails & youtube preview + looping -----------------------------
 
 function loopVideo() {
 	console.log ("startTime: " + startTime);
@@ -110,7 +180,7 @@ function refreshThumbnails() {
 }
 
 
-//---------------------------JQuery UI buttonset for loops -----------------------------
+//---------------------------JQuery UI buttonset for loop type selection -----------------------------
 
 function initLoopButtons () {
 	//init radio buttons
@@ -135,7 +205,7 @@ function getLoopVal() {
     return val; // return value of checked radio or undefined if none checked
 }
 
-//---------------------------The place where shit gets built-----------------------------
+//---------------------------The place where shit gets built as a result of asynch calls-----------------------------
 
 function resetGifContainer () {
 	document.getElementById("gifContainer").innerHTML='<p id="loadingGif"><i class="fa fa-spinner fa-spin fa-3x fa-fw margin-bottom"></i></br>Generating your gif...</p>'; 
@@ -216,46 +286,6 @@ function outputGif() {
 
 }
 
-// function mask () {
-// 	console.log ('Masking...');
-// 	var gifBuilder = document.getElementById("gifBuilder");
-// 	resetGifContainer();
-
-// 	var createGifUrl = _STATIC_URL + 'authoringTool/mask/' + videoId + '?start=' + startTime + '&end=' + endTime;
-// 	var errorMessage = 'There was a problem. The mask could not be created.';
-// 	handleRequest(createGifUrl, errorMessage, showGif);
-// }
-
-// function loop1 () {
-// 	console.log ('Masking...');
-// 	var gifBuilder = document.getElementById("gifBuilder");
-// 	resetGifContainer();
-
-// 	var createGifUrl = _STATIC_URL + 'authoringTool/loop1/' + videoId + '?start=' + startTime + '&end=' + endTime;
-// 	var errorMessage = 'There was a problem. The mask could not be created.';
-// 	handleRequest(createGifUrl, errorMessage, showGif);
-// }
-
-// function fade1 () {
-// 	console.log ('Masking...');
-// 	var gifBuilder = document.getElementById("gifBuilder");
-// 	resetGifContainer();
-
-// 	var createGifUrl = _STATIC_URL + 'authoringTool/fade1/' + videoId + '?start=' + startTime + '&end=' + endTime;
-// 	var errorMessage = 'There was a problem. The mask could not be created.';
-// 	handleRequest(createGifUrl, errorMessage, showGif);
-// }
-
-// function fade2 () {
-// 	console.log ('Masking...');
-// 	var gifBuilder = document.getElementById("gifBuilder");
-// 	resetGifContainer();
-
-// 	var createGifUrl = _STATIC_URL + 'authoringTool/fade2/' + videoId + '?start=' + startTime + '&end=' + endTime;
-// 	var errorMessage = 'There was a problem. The mask could not be created.';
-// 	handleRequest(createGifUrl, errorMessage, showGif);
-// }
-
 //---------------------------Asynch Helpers-----------------------------
 
 function handleRequest (url, error, onloadCallback) {
@@ -283,19 +313,6 @@ function handleError (errorMessage) {
 function clearError () {
 	document.getElementById("error").innerHTML = "";
 }
-
-//---------------------------Helpers---------------------------
-
-// function formatTime(seconds) {
-// 	var totalSec = seconds;
-// 	var hours = parseInt( totalSec / 3600 ) % 24;
-// 	var minutes = parseInt( totalSec / 60 ) % 60;
-// 	var seconds = parseInt(totalSec) % 60;
-// 	var millis = parseInt((totalSec % 1)*1000);
-
-// 	var result = (hours == 0 ? "" : hours + ":") + minutes + ":" + (seconds  < 10 ? "0" + seconds : seconds) + "." + millis
-// 	return result;
-// }
 
 
 

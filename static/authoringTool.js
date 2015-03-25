@@ -12,7 +12,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube p
 var player, startTime, endTime;
 var timeUpdater = null;
 var thumbnailUpdater = null;
-var maxGifLength = 5;
+var maxGifLength = 15;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player-toggle', {
@@ -111,37 +111,34 @@ function regionMaskButtonClicked () {
 function initSlider() {
 	$(function() {
 		startTime = 10.05;
-		endTime = 14.90;
-		var duration = player.getDuration();
-		var maxLength = 15;
+		duration = 5;
+		endTime = startTime + duration;
+		var videoDuration = player.getDuration();
 	    $( "#slider-range" ).slider({
-	      range: true,
 	      min: 0,
-	      max: duration,
-	      maxRange: maxLength,
+	      max: videoDuration,
 	      step: .001,
-	      values: [ startTime, endTime ],
+	      value: startTime,
 	      slide: function(event, ui) {
-            startTime = ui.values[0];
-	      	endTime = ui.values[1]
+            startTime = ui.value;
+            endTime = startTime + duration;
 	        $( "#start" ).val(startTime);
-	        $( "#end" ).val(endTime);
 	        loopVideo(); 
 	        refreshThumbnails();
 	      }
 	    });
 	    $( "#start" ).val(startTime);
-	    $( "#end" ).val(endTime);
+	    $( "#duration" ).val(duration);
 
 	    $( "#start" ).change(function() {
 	    	startTime = $(this).val();
-		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+		    $( "#slider-range" ).slider( "value", startTime );
 		    loopVideo();
 		    refreshThumbnails();
 		});
-	    $( "#end" ).change(function() {
-	    	endTime = $(this).val();
-		    $( "#slider-range" ).slider( "values", [startTime, endTime] );
+	    $( "#duration" ).change(function() {
+	    	duration = parseFloat($(this).val());
+	    	endTime = startTime + duration;
 		    loopVideo();
 		    refreshThumbnails();
 		});

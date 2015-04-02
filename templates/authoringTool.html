@@ -30,6 +30,7 @@
 
 	<div id="gifBuilder"> <!-- region where the gif is built and displayed -->
 		<div class="col leftCol"> <!-- left col for building -->
+			<div id="focus-left-button" onClick="focusLeft()" ><<</div>
 			
 			<div class="keyframeContainer"><div class="keyframe dotted" id="startFrame"></div>Start frame</div> 
 
@@ -42,13 +43,19 @@
 				<div id="mask-button" class="mask-button hover-highlight" onclick="maskButtonClicked()">Mask editor</div>
 				<div id="split-mask-button" class="mask-button hover-highlight hide-mask-button" onclick="splitMaskButtonClicked()">Split Mask</div>
 				<div id="region-mask-button" class="mask-button hover-highlight hide-mask-button" onclick="regionMaskButtonClicked()">Region Mask</div>
+				<div id="region-choice" class="mask-hidden">
+					<input class="choice-button" type="radio" value="1" id="1" name="region-choice" checked="checked">
+				    	<label for="1" id="1-label">Left</label>
+					<input class="choice-button" type="radio" value="2" id="2" name="region-choice">
+				    	<label for="2" id="2-label">Right</label>
+				</div>
 				</br>
 				<canvas class="mask-canvas mask-hidden" id="split-mask" width="560" height="315"></canvas>
 				<canvas class="mask-canvas mask-hidden" id="region-mask" width="560" height="315"></canvas>
 
 
 				<!-- the iFrame -->
-				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId.split('-')[1]  }}?enablejsapi=1&theme=light&showinfo=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
+				<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId[8:]  }}?enablejsapi=1&theme=light&showinfo=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
 				
 				<!-- the bottom controls -->
 				<div id="controls">
@@ -80,7 +87,8 @@
 			<div class="keyframeContainer"><div class="keyframe dotted" id="endFrame"></div>End frame</div>
 		</div> <!-- end left col -->
 
-		<div onClick="focusRight()" class="col rightCol"> <!-- right col for displyaing gif -->
+		<div class="col rightCol"> <!-- right col for displyaing gif -->
+			<div id="focus-right-button" onClick="focusRight()" >>></div>
 			<div class="dotted" id="gifContainer"></div>
 			<h2 id="rightColTitle"></h2>
 		</div>

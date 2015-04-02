@@ -130,6 +130,16 @@ h2 {
 	text-align: center;
 }
 
+#focus-left-button, #focus-right-button {
+	cursor: pointer;
+ 	margin: 0 20px;
+}
+
+#focus-left-button {
+	text-align: right;
+	opacity: 0;
+}
+
 /* key frames (start and end frame)*/
 
 .keyframeContainer, .keyframe, .playerContainer {
@@ -161,6 +171,7 @@ h2 {
 	cursor: pointer;
 }
 
+
 .hide-mask-button {
 	display: none;
 }
@@ -170,8 +181,9 @@ h2 {
 }
 
 .mask-hidden {
-	height: 0;
+	width: 0;
 	opacity: 0;
+	height: 0px;
 }
 
 #split-mask {
@@ -180,6 +192,17 @@ h2 {
 
 #region-mask {
 	background: rgba(255, 0, 0, .5);
+}
+
+#region-choice {
+	display: inline;
+	position: relative;
+	right: -130px;
+}
+
+.choice-button {
+	width: 50px;
+	display: inline-block;
 }
 
 /* player iFrame + container */

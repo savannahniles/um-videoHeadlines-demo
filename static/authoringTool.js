@@ -13,6 +13,7 @@ var player, startTime, endTime;
 var timeUpdater = null;
 var thumbnailUpdater = null;
 var maxGifLength = 15;
+var currentMaskCoordinates = null;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player-toggle', {
@@ -34,21 +35,33 @@ function init(id) {
 	videoId = id;
 	initLoopButtons();
 	$('document').ready(function(){
-		buildSplitMaskCanvas();
+		buildMask('region-mask');
+		buildMask('split-mask');
 	});
 
 }
 
 //---------------------------Set up mask canvases-----------------------------
 
-function buildSplitMaskCanvas () {
-	var canvas = document.getElementById('region-mask'),
+function buildMask (id) {
+	var canvas = document.getElementById(id),
     ctx = canvas.getContext('2d'),
     rect = {},
     drag = false;
 
 	function draw() {
-	  ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
+		if (id == 'region-mask') { //draw rectangle 
+			ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
+		}
+		else if (id == 'split-mask') {
+			//draw line
+			ctx.beginPath();
+			ctx.moveTo(rect.startX, rect.startY);
+			ctx.lineTo(rect.startX + rect.w, rect.startY + rect.h);
+			ctx.stroke();
+		}
+		currentMaskCoordinates = [rect.startX, rect.startY, rect.startX + rect.w, rect.startY + rect.h];
+
 	}
 
 	function getMousePos(canvas, evt) {
@@ -73,8 +86,8 @@ function buildSplitMaskCanvas () {
 
 	function mouseMove(e) {
 	  if (drag) {
-	    rect.w = (e.pageX - this.offsetLeft) - rect.startX;
-	    rect.h = (e.pageY - this.offsetTop) - rect.startY ;
+	    rect.w = getMousePos(canvas, e).x - rect.startX;
+	    rect.h = getMousePos(canvas, e).y - rect.startY ;
 	    ctx.clearRect(0,0,canvas.width,canvas.height);
 	    draw();
 	  }
@@ -99,11 +112,17 @@ function maskButtonClicked () {
 function splitMaskButtonClicked () {
 	$( "#region-mask" ).addClass( "mask-hidden" );
 	$( "#split-mask" ).toggleClass( "mask-hidden" );
+	$( "#region-choice" ).removeClass( "mask-hidden" );
+	$( "#1-label span" ).text("Right");
+	$( "#2-label span" ).text("Left");
 }
 
 function regionMaskButtonClicked () {
 	$( "#split-mask" ).addClass( "mask-hidden" );
 	$( "#region-mask" ).toggleClass( "mask-hidden" );
+	$( "#region-choice" ).removeClass( "mask-hidden" );
+	$( "#1-label span" ).text("Inner");
+	$( "#2-label span" ).text("Outer");
 }
 
 //---------------------------JQuery UI slider-----------------------------
@@ -111,7 +130,7 @@ function regionMaskButtonClicked () {
 function initSlider() {
 	$(function() {
 		startTime = 10.05;
-		duration = 5;
+		duration = 2;
 		endTime = startTime + duration;
 		var videoDuration = player.getDuration();
 	    $( "#slider-range" ).slider({
@@ -131,7 +150,8 @@ function initSlider() {
 	    $( "#duration" ).val(duration);
 
 	    $( "#start" ).change(function() {
-	    	startTime = $(this).val();
+	    	startTime = parseFloat($(this).val());
+	    	endTime = startTime + duration;
 		    $( "#slider-range" ).slider( "value", startTime );
 		    loopVideo();
 		    refreshThumbnails();
@@ -183,14 +203,15 @@ function initLoopButtons () {
 	//init radio buttons
 	$(function() {
 	    $( "#loop" ).buttonset();
+	    $( "#region-choice" ).buttonset();
 	});
 
 }
 
-function getLoopVal() {
+function getRadioVal(id) {
     var val = "";
     // get list of radio buttons with specified name
-    var radios = document.getElementsByClassName("loopButton");
+    var radios = document.getElementsByClassName(id);
     
     // loop through list of radio buttons
     for (var i=0, len=radios.length; i<len; i++) {
@@ -257,10 +278,14 @@ var showThumbnails = function () {
 
 function focusLeft () {
 	document.getElementById("gifBuilder").style.left = "0";
+	document.getElementById("focus-right-button").style.opacity = "1";
+	document.getElementById("focus-left-button").style.opacity = "0";
 }
 
 function focusRight () {
 	document.getElementById("gifBuilder").style.left = "-70%";
+	document.getElementById("focus-right-button").style.opacity = "0";
+	document.getElementById("focus-left-button").style.opacity = "1";
 }
 
 function outputGif() {
@@ -274,12 +299,50 @@ function outputGif() {
 	player.pauseVideo();
 	resetGifContainer();
 
-	var loop = getLoopVal(); //get loop value
-	var mask = ""; //get mask value, needs fixing
+	var resize = 600; //resize is currently defaulted to this on the server
 
-	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime + '&loop=' + loop + '&mask=' + mask;
+	//get loop value
+	var loop = getRadioVal("loopButton"); 
+
+	//get mask value if any
+	var maskType = ""; 
+	var mask = "";
+	maskRegion = getRadioVal("choice-button");
+	console.log (maskRegion);
+	//check to see if each mask editor is open
+	if ( !$("#split-mask").hasClass("mask-hidden") ) {
+		mask = resizeMask(currentMaskCoordinates, resize); 
+		maskType = "maskLeft"
+		if (maskRegion == 2) {
+			maskType = "maskRight";
+		}
+
+	}
+	else if ( !$("#region-mask").hasClass("mask-hidden") ) {
+		maskType = "maskInner";
+		mask = resizeMask(currentMaskCoordinates, resize);
+		if (maskRegion == 2) {
+			maskType = "maskOuter";
+		}
+	}
+
+	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime + '&loop=' + loop + '&maskType=' + maskType + '&mask=' + mask;
 	var errorMessage = 'There was a problem. The gif could not be loaded.';
+	console.log (createGifUrl);
 	handleRequest(createGifUrl, errorMessage, showGif);
+
+}
+
+function resizeMask(currentMaskCoordinates, resize) {
+	// dimension of drawing / dimension of player = resize mask X / dimensions of new gif
+	var x1, y1, x2, y2;
+
+	x1 = parseInt(currentMaskCoordinates[0] * 600 / 560);
+	y1 = parseInt(currentMaskCoordinates[1] * 337 / 315);
+	x2 = parseInt(currentMaskCoordinates[2] * 600 / 560);
+	y2 = parseInt(currentMaskCoordinates[3] * 337 / 315);
+
+	return [x1, y1, x2, y2];
 
 }
 

@@ -115,6 +115,8 @@ var largeGlyphClicked = function (event, YTid) {
 	playerDiv = document.getElementById("player");
 	playerDiv.style.zIndex = 2;
 	playerDiv.style.opacity = 1;
+	player.playVideo();
+
 }
 
 function handleRequest (url, error, onloadCallback) {

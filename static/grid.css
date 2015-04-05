@@ -1,0 +1,82 @@
+body {
+	margin: 0;
+}
+
+/* Title */
+
+#title {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* Grid + Glyphs */
+
+#grid {
+	display: block;
+	margin: 0px auto;
+}
+
+.glyph {
+	display: inline-block;
+}
+
+/* Overlay */
+
+#modal {
+	background: white;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-ms-transition: opacity .5s;
+	-o-transition: opacity .5s;
+	transition: opacity .5s;
+	/*height: 0px;*/
+	opacity: 0;
+	z-index: -1;
+}
+
+#close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 20px;
+}
+
+.col {
+	width: 50%;
+	height: 100%;
+
+}
+
+.right-col {
+	float: right;
+}
+
+.left-col {
+	float: left;
+	text-align: right;
+	position: relative;
+}
+
+#player {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: -1;
+	opacity: 0;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-ms-transition: opacity .5s;
+	-o-transition: opacity .5s;
+	transition: opacity .5s;
+}
+
+#large-title {
+	padding-left: 20px;
+	width: 600px;
+}
+

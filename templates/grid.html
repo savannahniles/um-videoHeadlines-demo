@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Glyph | Grid</title>
+
+	<!-- J Query UI -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+
+  	<!-- Custom style + CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='grid.css') }}"></link>
+	<script src="{{ url_for('static', filename='grid.js') }}"></script>
+	<script>
+	    init({{ data|tojson }}, {{ w|tojson }}, {{ h|tojson }}, {{ m|tojson }}, {{ head|tojson }}); 
+	</script>
+
+	<!-- Font Awesome, google fonts -->
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Sniglet:400,800' rel='stylesheet' type='text/css'>
+
+	</head>
+	<body onload=setup()>
+
+	<h1 id="title"></h1>
+	<div id="error"></div>
+
+	<div id="grid"></div>
+
+	<div id="modal" onclick="closeModal()">
+		<!-- <h1 id='close' >X</h1> -->
+		<div class="col left-col">
+			<img id="large-glyph" src="">
+			<iframe width="600" height="337" src="http://www.youtube.com/embed/m7cO-lyaFDw?enablejsapi=1&theme=light&showinfo=0&modestbranding=1&controls=0" frameborder="0" volume="0" id="player"></iframe>
+		</div>
+		<div class="col right-col"><h1 id="large-title"></h1></div>
+	</div>
+
+	</body>
+</html>

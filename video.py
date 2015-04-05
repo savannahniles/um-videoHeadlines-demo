@@ -79,6 +79,7 @@ def processGif(videoId, start, end, loop, maskType, mask):
 	if (loop == "time_symetrize"):
 		composition = clip.fx( time_symetrize )
 		d = d*2
+		print("in time_symetrize")
 	if (loop == "progressive_fade"):
 		clip = clip.crossfadein(d/2)
 		composition = (CompositeVideoClip([clip, clip.set_start(d/2), clip.set_start(d)]).subclip(d/2, 3*d/2))
@@ -99,15 +100,16 @@ def processGif(videoId, start, end, loop, maskType, mask):
 			colLeft = 0
 			colRight = 1		
 		clipMask = dw.color_split(clip.size, p1=(float(p[0]), float(p[1])), p2=(float(p[2]), float(p[3])), col1=colLeft, col2=colRight, grad_width=25) # blur the mask's edges
-		snapshot = (clip.to_ImageClip(t=0)
+		snapshot = (clip.to_ImageClip(t=3)
 				.set_duration(d)
 				.set_mask(ImageClip(clipMask, ismask=True)))
 		composition = CompositeVideoClip([composition,snapshot])
 	if (maskType == 'maskOuter'):
 		composition = clip.fx(vfx.freeze_region, outside_region=(p[0], p[1], p[2], p[3]))
 	if (maskType == 'maskInner'):
+		print("in mask_inner")
 		freeze = (clip.fx(vfx.crop, x1=p[0], y1=p[1], x2=p[2], y2=p[3])
-				.to_ImageClip(t=1)
+				.to_ImageClip(t=0)
 				.set_duration(d)
 				.set_position((p[0],p[1])))
 		composition = CompositeVideoClip([composition, freeze])

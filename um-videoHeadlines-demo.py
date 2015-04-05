@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for     # for running the Flask server
 import sys                                                               # for obtaining command line arguments
 import json
+import csv
 import time
 
 #helper functions
@@ -72,16 +73,14 @@ def makeThumbnails(videoId):
     return json.dumps(response)
 
 
-#this is just a little demo page
-@app.route('/splintered_screens')
-def splintered_screens():
-    return render_template('ambient-implementations.html')
-
-#this is just a little demo page
-@app.route('/100k')
-def hundred():
-    return render_template('ambient-implementations2.html')
-
+#grid for demos
+@app.route('/grid/<data>', methods=['GET'])
+def grid(data): 
+    w = request.args.get('w')
+    h = request.args.get('h')
+    m = request.args.get('m')
+    head = request.args.get('head')
+    return render_template('grid.html', data=data, w=w, h=h, m=m, head=head)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -89,30 +88,4 @@ if __name__ == '__main__':
     else:
         # app.run(port = int(sys.argv[1])) # run on the specified port number
         app.run(host = "0.0.0.0", port = int(sys.argv[1]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #the old way with the scene detection. Deprecating this
-# @app.route('/authoringTool2/<videoId>')
-# def authoringTool2(videoId):
-#     return render_template('authoringTool2.html', videoId=videoId)
-
-# @app.route('/authoringTool/sceneDetection/<videoId>')
-# def sceneDetection(videoId):
-#     errorCode = 0
-#     scenes = video.getScenes(videoId)
-#     videoPath = video.getVideoPath(videoId)
-#     response = {'errorCode' : errorCode, 'videoPath': videoPath, 'scenes': scenes}
-#     return json.dumps(response)
 

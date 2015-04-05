@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ videoId }}</title>
+	<title>Make a Glyph | {{ videoId }}</title>
+
+	<!-- Touch -->
+	<script type="text/javascript" src="socket.io-0.9.10.min.js"></script>
+	<script type="text/javascript" src="caress-0.1.0.js"></script>
+
+	<script>
+		$(function() {
+		  window.client = new Caress.Client({
+		      host: 'localhost',
+		      port: 5000
+		  });
+		  client.connect();
+		});
+	</script>
 
 	<!-- J Query UI -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">

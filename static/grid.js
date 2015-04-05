@@ -88,6 +88,7 @@ var glyphClicked = function (gifUrl, title, YTid) {
 	console.log(title);
 	document.getElementById("large-glyph").setAttribute('src', gifUrl);
 	document.getElementById("large-glyph").setAttribute('onclick', 'largeGlyphClicked(event, "'+YTid+'")');
+	document.getElementById("large-glyph").setAttribute('ontouchstart', 'largeGlyphClicked(event, "'+YTid+'")');
 	document.getElementById("large-title").innerHTML = title;
 
 	playerDiv = document.getElementById("player");

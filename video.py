@@ -100,7 +100,7 @@ def processGif(videoId, start, end, loop, maskType, mask):
 			colLeft = 0
 			colRight = 1		
 		clipMask = dw.color_split(clip.size, p1=(float(p[0]), float(p[1])), p2=(float(p[2]), float(p[3])), col1=colLeft, col2=colRight, grad_width=25) # blur the mask's edges
-		snapshot = (clip.to_ImageClip(t=3)
+		snapshot = (clip.to_ImageClip(t=0)
 				.set_duration(d)
 				.set_mask(ImageClip(clipMask, ismask=True)))
 		composition = CompositeVideoClip([composition,snapshot])

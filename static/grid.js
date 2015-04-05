@@ -43,11 +43,11 @@ var setup = function () {
 	screenWidth = window.innerWidth;
 	var numberOfGifsInARow = Math.floor(screenWidth/totalGifWidth);
 	document.getElementById('grid').style.width = numberOfGifsInARow*totalGifWidth + "px";
-	
+
 	//center modal vertically 
-	screenHeight = window.innerHeight;
-	glyphHeight = 350;
-	modalMargin = (screenHeight - glyphHeight)/2;
+	glyphHeight = document.getElementById("large-glyph").height;
+	console.log(glyphHeight);
+	modalMargin = ($(window).height() - glyphHeight)/2;
 	document.getElementById("modal").style.padding = modalMargin + "px 0";
 
 	//set title if there is one

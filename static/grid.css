@@ -1,13 +1,26 @@
 body {
 	margin: 0;
+	/*background: #F2F2F2;*/
+	background: #f9f0ea;
 }
 
 /* Title */
+
+h1 {
+	font-family: 'Libre Baskerville', serif;
+	font-weight: lighter;
+
+}
 
 #title {
 	display: block;
 	margin-right: auto;
 	margin-left: auto;
+	font-size: 10vh;
+	text-shadow: 2px 2px #D0D0D0; 
+	text-align: center;
+	padding: 20px;
+	color: #ff7651;
 }
 
 /* Grid + Glyphs */
@@ -24,7 +37,8 @@ body {
 /* Overlay */
 
 #modal {
-	background: white;
+	background: #ff7651;
+	color: #F2F2F2;
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -34,7 +48,6 @@ body {
 	-ms-transition: opacity .5s;
 	-o-transition: opacity .5s;
 	transition: opacity .5s;
-	/*height: 0px;*/
 	opacity: 0;
 	z-index: -1;
 }
@@ -53,6 +66,11 @@ body {
 	float: left;
 	text-align: right;
 	position: relative;
+}
+
+#large-glyph {
+	/*width: 40vw;*/
+	height: 23vw;
 }
 
 #player {

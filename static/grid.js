@@ -75,6 +75,7 @@ var setup = function () {
 		glyph.setAttribute('width', w);
 		glyph.setAttribute('height', h);
 		glyph.setAttribute('onclick', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
+		glyph.setAttribute('ontouchstart', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
 		glyph.style.margin = m + "px";
 		glyph.setAttribute('class', 'glyph');
 
@@ -138,11 +139,10 @@ function handleError (errorMessage) {
 }
 
 // Touch events
-
 window.addEventListener('load', function(){ // on page load
  
-    document.body.addEventListener('touchstart', function(e){
-        alert(e.changedTouches[0].pageX) // alert pageX coordinate of touch point
-    }, false)
+    // document.body.addEventListener('touchstart', function(e){
+    //     alert(e.changedTouches[0].pageX) // alert pageX coordinate of touch point
+    // }, false)
  
 }, false)

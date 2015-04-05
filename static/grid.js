@@ -136,3 +136,13 @@ function handleError (errorMessage) {
 	console.log(errorMessage);
 	document.getElementById("error").innerHTML = errorMessage;
 }
+
+// Touch events
+
+window.addEventListener('load', function(){ // on page load
+ 
+    document.body.addEventListener('touchstart', function(e){
+        alert(e.changedTouches[0].pageX) // alert pageX coordinate of touch point
+    }, false)
+ 
+}, false)

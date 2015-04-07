@@ -37,8 +37,30 @@ function init(id) {
 	$('document').ready(function(){
 		buildMask('region-mask');
 		buildMask('split-mask');
+		verticallyCenter();
 	});
 
+}
+
+function verticallyCenter() {
+	// //center left col
+	// //get the height of the largest element
+	// //get the height of the document or window or some shit (?)
+	// //add margins
+
+	// //center right col
+	// h = $("#gifContainer").height();
+	// console.log (h);
+	// docH = document.height;
+	// console.log(docH);
+
+	bigLeftCol = $('#bigLeftCol').height();
+	win = $(window).height();
+	console.log(win);
+	if ((win - bigLeftCol)/2 > 50) {
+		$('#bigLeftCol').css("padding-top", (win - bigLeftCol)/2 + "px" );
+		$('#focus-left-button').css("top", -(win - bigLeftCol)/2 + "px" );
+	}
 }
 
 //---------------------------Set up mask canvases-----------------------------
@@ -102,27 +124,42 @@ function buildMask (id) {
 	init();
 }
 
-function maskButtonClicked () {
-	$( "#split-mask-button" ).toggleClass( "hide-mask-button" );
-	$( "#region-mask-button" ).toggleClass( "hide-mask-button" );
-	$( "#region-mask" ).addClass( "mask-hidden" );
-	$( "#split-mask" ).addClass( "mask-hidden" );
-}
-
 function splitMaskButtonClicked () {
+	$( "#split-mask-button" ).toggleClass( "mask-active" );
+	$( "#region-mask-button" ).removeClass( "mask-active" );
+
 	$( "#region-mask" ).addClass( "mask-hidden" );
 	$( "#split-mask" ).toggleClass( "mask-hidden" );
-	$( "#region-choice" ).removeClass( "mask-hidden" );
-	$( "#1-label span" ).text("Right");
-	$( "#2-label span" ).text("Left");
+
+	// $( "#region-choice" ).toggleClass( "mask-hidden" );
+	if ($( "#split-mask-button" ).hasClass( "mask-active" )) {
+		document.getElementById("region-choice").style.opacity = "1";
+	}
+	else {
+		document.getElementById("region-choice").style.opacity = "";
+	}
+	$( '#arrow-up' ).css("left", "-26px")
+	$( "#1-label span" ).text("Still Right Region");
+	$( "#2-label span" ).text("Still Left Region");
+	
 }
 
 function regionMaskButtonClicked () {
+	$( "#region-mask-button" ).toggleClass( "mask-active" );
+	$( "#split-mask-button" ).removeClass( "mask-active" );
+
 	$( "#split-mask" ).addClass( "mask-hidden" );
 	$( "#region-mask" ).toggleClass( "mask-hidden" );
-	$( "#region-choice" ).removeClass( "mask-hidden" );
-	$( "#1-label span" ).text("Inner");
-	$( "#2-label span" ).text("Outer");
+
+	if ($( "#region-mask-button" ).hasClass( "mask-active" )) {
+		document.getElementById("region-choice").style.opacity = "1";
+	}
+	else {
+		document.getElementById("region-choice").style.opacity = "";
+	}
+	$( '#arrow-up' ).css("left", "106px")
+	$( "#1-label span" ).text("Still Inner Region");
+	$( "#2-label span" ).text("Still Outer Region");
 }
 
 //---------------------------JQuery UI slider-----------------------------

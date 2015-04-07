@@ -1,3 +1,13 @@
+/*
+Colors:
+
+Orange: #ff7651
+White: #F0F0F0
+Gray: #dadada
+Dark Gray: #464E54
+*/
+
+
 @font-face {
     font-family: Avenir;
     src: url(/static/avenir.ttf);
@@ -7,38 +17,46 @@ body {
 	font-family: Avenir;
 	margin: 0;
 	padding: 0;
+	color: #464E54;
 }
 
-.vertically-center {
-	position: relative;
-	top: 50%;
-	transform: translateY(50%);
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto; 
 }
 
 h1 {
-  font-family: 'Sniglet', Avenir;
-  background: #04C7FF;
-  color: white;
-  width: 300px;
-  padding: 10px;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: lighter;
+  color: #ff7651;
+  text-shadow: 2px 2px #F0F0F0; 
   font-size: 62px;
   text-align: center;
   margin: 0px;
 }
 
-h1.big-title {
-	/*background: url(http://i.imgur.com/axCGqvQ.gif);*/
-	width: 490px;
-	margin: 50px auto;
-	font-size: 105px;
-	background: white;
-
-}
-
 h2 {
 	font-family: Avenir;
 	font-weight: lighter;
-	color: #04C7FF;
+	color: #464E54;
+}
+
+.small-text {
+  font-style: italic;
+  font-size: 90%;
+  color: #464E54;
 }
 
 *:focus {
@@ -72,14 +90,38 @@ h2 {
 
 .rightCol {
 	float: right;
-	background: lightblue;
+	background: #dadada;
 }
 
 .leftCol {
 	float: left;
 }
 
+.full-height {
+	height: 100vh;
+	min-height: 700px;
+
+}
+
+input[type='text'] {
+	font-size: 12px;
+	width: 50px;
+	color: #ff7651;
+	font-family: 'Avenir';
+}
+
 /* ------------------------- Home page ----------------------------- */
+
+
+.big-title {
+  width: 270px;
+  height: 270px;
+  border-radius: 490px;
+  margin: 0px auto 50px auto;
+  border: 6px solid #ff7651;
+  line-height: 270px;
+  text-align: center;
+}
 
 #url-form {
 	width: 1000px;
@@ -93,13 +135,13 @@ h2 {
 	font-size: 24px;
 	color: #dadada;
 	border: none;
-	border-bottom: 2px solid #04C7FF;
+	border-bottom: 2px solid #464E54;
 }
 
 #url-form button[type='submit'] {
 	border: none;
 	font-size: 24px;
-	color: #04C7FF;
+	color: #464E54;
 	background: white;
 }
 
@@ -109,11 +151,26 @@ h2 {
 
 /* ------------------------- Authoring tool ----------------------------- */
 
+#authoring-tool-header {
+  position: fixed;
+  z-index: 3;
+  width: 70px;
+  height: 70px;
+  border-radius: 490px;
+  margin: 10px;
+  border: 3px solid #ff7651;
+  line-height: 70px;
+  text-align: center;
+  background: rgba(0,0,0,.05);
+}
+
+#authoring-tool-header h1 {
+	font-size: 18px;
+}
+
 #gifBuilder {
 	z-index: 1;
 	overflow: hidden;
-	padding: 20px 0;
-	margin: 20px auto;
 	min-width: 2400px;
 	width: 170%;
 	position: relative;
@@ -126,18 +183,51 @@ h2 {
 
 }
 
-.leftCol {
-	text-align: center;
+/*special shit for the sub columns on the left side*/
+.leftCol .rightCol {
+	background: white;
+}
+
+#bigLeftCol {
+	padding-top: 50px;
 }
 
 #focus-left-button, #focus-right-button {
-	cursor: pointer;
- 	margin: 0 20px;
+	/*cursor: pointer;*/
+ 	margin: 20px;
+ 	color: #464E54;
 }
 
 #focus-left-button {
 	text-align: right;
 	opacity: 0;
+	position: relative;
+}
+
+/* Controls, general */
+
+.controls-section {
+	margin-bottom: 10px;
+	text-align: left;
+}
+
+.controls-heading {
+	color: #464E54;
+	display: block;
+	border-bottom: 1px solid #dadada;
+	padding: 5px 0;
+	margin-bottom: 15px;
+	width: 325px;
+	text-align: left;
+}
+
+.controls-heading span {
+	color: #dadada;
+	font-style: italic;
+	position: absolute;
+	margin-left: 10px;
+	font-size: 90%;
+	line-height: 23px;
 }
 
 /* key frames (start and end frame)*/
@@ -147,28 +237,73 @@ h2 {
 }
 
 .keyframeContainer {
-	width: 25%;
+	margin-right: 20px;
+	text-align: center;
 }
 
 .keyframe {
-	width: 280px;
-	height: 157px;
+	width: 180px;
+	height: 100px;
 }
 
 .thumb {
 	width: 100%;
 }
 
+/* player iFrame + container */
+
+.playerContainer {
+  	margin: 0px auto;
+  	margin-right: 20px;
+  	text-align: right;
+}
+
+#error {
+	position: absolute;
+  	background: white;
+}
+
+#player {
+	margin: 0px auto;
+}
+
+/* Controls */
+
+#controls {
+	width: 560px;
+	display: inline-block;
+}
+
+.ui-slider .ui-slider-handle {
+	cursor: col-resize;
+	background: #dadada;
+}
+
+#controls label i {
+	color: #ff7651;
+}
+
+
 /* Masking */
 
 .mask-button {
-	/*position: relative;*/
-	display: inline-block;
 	width: 100px;
-	background: #04C7FF;
-	color: white;
+	background: white;
+	color: #555555;
+	border: 1px solid #d3d3d3;
 	text-align: center;
 	cursor: pointer;
+	float: left;
+	padding: .4em 1em;
+	font-size: 12px;
+    font-family: 'Avenir';
+    margin-right: 6px;
+}
+
+.mask-button:hover {
+	opacity: 1;
+	border-color: #999999;
+	color: #212121;
 }
 
 
@@ -187,62 +322,57 @@ h2 {
 }
 
 #split-mask {
-	background: rgba(0, 255, 0, .5);
+	background: rgba(106, 247, 236, 0.5)
 }
 
 #region-mask {
-	background: rgba(255, 0, 0, .5);
+	background: rgba(182, 152, 255, 0.5);
 }
 
 #region-choice {
-	display: inline;
 	position: relative;
-	right: -130px;
+	top: 20px;
+	background: #dadada;
+	margin: 0;
+	margin-right: 50px;
+	padding: 1em;
+	opacity: 0;
+	-webkit-transition: opacity .25s;
+	-moz-transition: opacity .25s;
+	-ms-transition: opacity .25s;
+	-o-transition: opacity .25s;
+	transition: opacity .25s;
+}
+
+#region-choice input[type=text] {
+	width: 50px;
+}
+
+#arrow-up {
+	width: 0;
+	height: 0;
+	position: relative;
+	top: -50px;
+	left: -26px; /*move to 106*/
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	border-bottom: 15px solid #dadada;
+  	-webkit-transition: left .5s;
+	-moz-transition: left .5s;
+	-ms-transition: left .5s;
+	-o-transition: left .5s;
+	transition: left .5s;
 }
 
 .choice-button {
 	width: 50px;
-	display: inline-block;
+	display: block;
 }
 
-/* player iFrame + container */
+/* Looping controls */
 
-.playerContainer {
-	width: 49%;
-  	margin: 0px auto;
-  	text-align: left;
-}
-
-#error {
-	position: absolute;
-  	background: white;
-}
-
-#player {
-	margin: 0px auto;
-}
-
-/* Controls */
-
-#controls {
-	width: 560px;
-}
-
-.ui-slider .ui-slider-handle {
-	/*opacity: 0;*/
-	cursor: col-resize;
-}
-
-#controls label i {
-	color: #04C7FF;
-}
-
-#start, #end {
-	width: 50px;
-	font-size: 12px;
-	font-family: 'Avenir';
-	color: #04C7FF;
-
+#loop {
+	/*margin-top: 40px; /*hack*/*/
 }
 
 .ui-buttonset .ui-button {
@@ -251,10 +381,10 @@ h2 {
   	margin-right: 3px;
 }
 
-.ui-buttonset .ui-state-active {
-	background: #04C7FF;
-	color: white;
-	border: 1px solid #04C7FF;
+.ui-buttonset .ui-state-active, .mask-active, .mask-active:hover {
+	border-color: #ff7651;
+	border: 1px solid #ff7651;
+	color: #555555;
 }
 
 .ui-button-text{
@@ -262,13 +392,22 @@ h2 {
 	font-family: 'Avenir';
 }
 
+.output-button {
+	text-align: right;
+}
+
 
 #outputGif {
-	border: none;
-	background: none;
-	font-size: 24px;
-	color: #04C7FF;
 	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	border-bottom:1px solid #ff7651;
+	margin: 0px 50px;
+/*	width: 0;
+	height: 0;
+	border-top: 40px solid transparent;
+	border-bottom: 40px solid transparent;
+	border-left: 60px solid #ff7651;*/
 }
 
 /* right side collumn with gif output */
@@ -283,15 +422,17 @@ h2 {
 #gifContainer {
 	height: 315px;
 	width: 560px;
-	/*margin-left: 20px;*/
 	margin: 0px auto;
+	border: 3px dashed #ff7651;
+	position: relative;
+    top: calc(50% - 157px - 62px); /*half the height of the image and height of the button*/
 }
 
 #loadingGif {
 	position: relative;
   	top: 100px;
 	text-align: center;
-  	color: #04C7FF;
+  	color: #ff7651;
   	font-size: 18px;
 }
 
@@ -299,16 +440,3 @@ h2 {
 	height: 100%;
 }
 
-/* authoring tool helpers */
-
-#help-toggle {
-	color: rgb(255, 116, 0);
-	position: fixed;
-	top: 5px;
-	right: 5px;
-}
-
-.help {
-	font-size: 12px;
-	color: rgb(255, 116, 0);
-}

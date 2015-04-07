@@ -12,6 +12,11 @@ app.debug=True
 
 #ultimately how we'll input a URL and be forewarded to that page
 @app.route('/')
+def landingPage():
+    return render_template('landing-page.html')
+
+#ultimately how we'll input a URL and be forewarded to that page
+@app.route('/start')
 def umVideoHeadlinesDemo():
     return render_template('um-videoHeadlines-demo.html')
 

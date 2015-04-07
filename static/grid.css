@@ -17,10 +17,10 @@ h1 {
 	margin-right: auto;
 	margin-left: auto;
 	font-size: 10vh;
-	text-shadow: 2px 2px #D0D0D0; 
 	text-align: center;
 	padding: 20px;
 	color: #ff7651;
+	text-shadow: 2px 2px #D0D0D0; 
 }
 
 /* Grid + Glyphs */

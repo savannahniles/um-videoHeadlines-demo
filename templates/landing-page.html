@@ -14,7 +14,7 @@
 		<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
 
 	</head>
-	<body>
+	<body >
 		<div class="outer">
 		<div class="middle">
 		<div class="inner">
@@ -30,20 +30,10 @@
 				$('#image-h1').css({'background-image': 'url(' + gif + ')'});
 
 				</script>
-				<h2 id="url-form">
-					<div id="errors">
-						{{ request.args.get('error', '') }}
-					</div>
-					<form method="post" action="{{ url_for('submitUrl') }}">
-						<label for="url">Start with a YouTube URL:</label>
-						<input type="text" name="url" autofocus/>
-						<button type="submit" class="button hover-highlight">
-			                <i class=" fa-play-circle fa fa-lg"></i>
-			            </button>
-			        </form>
-		        </h2>
+
 		</div>
 		</div>
 		</div>
+		
 	</body>
 </html>

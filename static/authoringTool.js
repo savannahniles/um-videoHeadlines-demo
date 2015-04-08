@@ -43,16 +43,6 @@ function init(id) {
 }
 
 function verticallyCenter() {
-	// //center left col
-	// //get the height of the largest element
-	// //get the height of the document or window or some shit (?)
-	// //add margins
-
-	// //center right col
-	// h = $("#gifContainer").height();
-	// console.log (h);
-	// docH = document.height;
-	// console.log(docH);
 
 	bigLeftCol = $('#bigLeftCol').height();
 	win = $(window).height();
@@ -412,7 +402,11 @@ function clearError () {
 }
 
 
-
+window.onload = function () { 
+	console.log ("ready freddy");
+	document.getElementById("curtain").style.opacity = 0;
+	document.getElementById("curtain").style.zIndex = -10;
+}
 
 
 

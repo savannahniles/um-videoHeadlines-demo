@@ -151,6 +151,19 @@ input[type='text'] {
 
 /* ------------------------- Authoring tool ----------------------------- */
 
+#curtain {
+	position: fixed;
+	background: white;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-ms-transition: opacity .5s;
+	-o-transition: opacity .5s;
+	transition: opacity .5s;
+}
+
 #authoring-tool-header {
   position: fixed;
   z-index: 3;
@@ -161,7 +174,7 @@ input[type='text'] {
   border: 3px solid #ff7651;
   line-height: 70px;
   text-align: center;
-  background: rgba(0,0,0,.05);
+  /*background: rgba(0,0,0,.05);*/
 }
 
 #authoring-tool-header h1 {
@@ -185,7 +198,7 @@ input[type='text'] {
 
 /*special shit for the sub columns on the left side*/
 .leftCol .rightCol {
-	background: white;
+	background: rgba(255,255,255,0);
 }
 
 #bigLeftCol {
@@ -202,6 +215,11 @@ input[type='text'] {
 	text-align: right;
 	opacity: 0;
 	position: relative;
+	top: -50px;
+}
+
+#focus-left-button i, #focus-right-button i {
+	cursor: pointer;
 }
 
 /* Controls, general */
@@ -277,6 +295,7 @@ input[type='text'] {
 .ui-slider .ui-slider-handle {
 	cursor: col-resize;
 	background: #dadada;
+	border-radius: 100px;
 }
 
 #controls label i {

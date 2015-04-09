@@ -18,7 +18,7 @@ Glyph creates output that includes seamless or nearly seamless loops and cinemag
 
 To install this application, first block out a few hours of an afternoon. Just kidding. I think this should take care of things:
 
-First nstall OpenCV, ffmpeg, and Imagemagik on your system. You can use Homebrew.
+First install OpenCV, ffmpeg, and Imagemagik on your system. You can use Homebrew.
 
 Then install python dependencies in your virtual environment:
 

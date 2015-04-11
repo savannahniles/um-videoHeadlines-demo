@@ -87,6 +87,13 @@ def grid(data):
     head = request.args.get('head')
     return render_template('grid.html', data=data, w=w, h=h, m=m, head=head)
 
+#ultimately how we'll input a URL and be forewarded to that page
+@app.route('/demo')
+def home():
+    data = "news"
+    return render_template('Glyph-eval.html')
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print "USAGE: python um-videoHeadlines-demo.py [port #]"

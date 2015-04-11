@@ -110,6 +110,50 @@ input[type='text'] {
 	font-family: 'Avenir';
 }
 
+/* ------------------------- Landing page ----------------------------- */
+
+.landing .outer {
+	height: 90vh;
+	position: static;
+}
+
+#scroll {
+  position: absolute;
+  top: 90vh;
+  width: 100vw;
+  left: 0;
+  text-align: center;
+}
+
+.landing .info {
+	padding: 50px;
+	text-align: center;
+
+}
+
+.landing .info h2 {
+	font-size: 28px;
+	line-height: 200%;
+	text-align: left;
+	color: white;
+}
+
+.landing a {
+	color: #E8E8E8;
+}
+
+.landing .orange {
+	background: #ff7651;
+}
+
+.landing .info img {
+	width: 550px;
+	height: 345px;
+	display: inline-block;
+	padding: 40px 20px;
+}
+
+
 /* ------------------------- Home page ----------------------------- */
 
 

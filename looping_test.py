@@ -2,7 +2,7 @@ from moviepy.editor import VideoFileClip
 from moviepy.video.tools.cuts import FramesMatches
 
 # Open a video file (any format should work)
-clip = VideoFileClip("looping_test.mp4")
+clip = VideoFileClip("looping-tests/patriots.mp4")
 
 # Downsize the clip to a width of 150px to speed up things
 clip_small = clip.resize(width=150)
@@ -19,8 +19,9 @@ matches = FramesMatches.load("myvideo_matches.txt")
 # where the first and last frame have a per-pixel distance < 1,
 # with at least one frame at a distance 2 of the first frame,
 # and with >0.5 seconds between the starts of the selected segments.
-selected_scenes = matches.select_scenes(match_thr=1,
-    min_time_span=1.5, nomatch_thr=2, time_distance=0.5)
+selected_scenes = matches.select_scenes(match_thr=10, min_time_span=1.5, nomatch_thr=.5, time_distance=1)
+print " ______ selected_scenes ______ "
+# print selected_scenes
 
 # The final GIFs will be 450 pixels wide
 clip_medium = clip.resize(width=450)

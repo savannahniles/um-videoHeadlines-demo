@@ -12,7 +12,12 @@ body {
 	color: white;
 }
 
-.headline {
+.specialFont {
+  font-weight: lighter;
+  color: #A1A1A1;
+}
+
+#headline {
 	display: inline-block;
 	width: 500px;
 	position: absolute;
@@ -47,6 +52,14 @@ img, iframe {
 	right: 0;
 	margin: 30px;
 	cursor: pointer;
+	border: none;
+	background: none;
+	font-size: 20px;
+	outline: none;
+}
+
+#fullscreenButton {
+	color: white;
 }
 
 #modal {

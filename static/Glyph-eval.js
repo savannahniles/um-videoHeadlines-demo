@@ -86,7 +86,11 @@ function next () {
 	else {
 		setImages ();
 	}
-	setTimer();	
+	setTimer();
+
+	if (document.webkitFullscreenEnabled) { 
+		document.body.webkitRequestFullscreen();
+	}	
 }
 
 function collectDataPoint(index) {

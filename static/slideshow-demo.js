@@ -8,35 +8,11 @@
 //when they end, send the whole info set to the server
 
 var data;
-var results = [];
 var currentImage = 0;
 var nextImage = 1;
 var evenImageDiv, oddImageDiv;
 var _STATIC_URL = "/";
-var clickedVideo = false;
-var start, elapsed;
 
-//download YouTube player API
-var tag = document.createElement('script');
-tag.src = "//www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // Create YouTube player(s) after the API code downloads.
-
-var player;
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-		events: {
-			'onReady': onPlayerReady
-		}
-	}); 
-}
-
-function onPlayerReady(evt) {
-	console.log ("player ready");
-    player.mute();
-
-}
 
 function init () {
 
@@ -65,48 +41,29 @@ var setup = function () {
 
 }
 
-function begin () {
-	//hide title
-	document.getElementById("start").remove();
-	setTimer();
-}
 
 function next () {
-	collectDataPoint(currentImage);
-	closeVideo();
 
 	//reset
-	setYtid ('123');
-	clickedVideo = false;
 	currentImage += 1;
 	nextImage += 1;
 	if (data.length == currentImage) {
-		endStudy();
+		currentImage = 0;
+		nextImage = 1;
 	}
 	else {
 		setImages ();
-	}
-	setTimer();
-
-	if (document.webkitFullscreenEnabled) { 
-		document.body.webkitRequestFullscreen();
 	}	
 }
 
-function collectDataPoint(index) {
-	stopTimer();
-	var result = {
-		index: index,
-		imageUrl: data[index].gifUrl, 
-		Ytid: data[index].Ytid, 
-		time: elapsed, 
-		clicked: clickedVideo,
-		timeVideo: player.getCurrentTime()
-	};
-	console.log(result);
-	results.push(result);
+function fullscreen() {
+
+	if (document.webkitFullscreenEnabled) { 
+		document.body.webkitRequestFullscreen();
+	}
 
 }
+
 
 function setImages () {
 	if (currentImage%2 == 0) { //if current image is even, then next Image is odd
@@ -127,48 +84,8 @@ function setImages () {
 }
 
 function buildImage (index) {
-	html = '<img src=" ' +data[index].gifUrl+  '  " onclick="imageClicked(&#39;'  +data[index].Ytid+   '&#39;)">';
+	html = '<img src=" ' +data[index].gifUrl+  '  ">';
 	return html;
-}
-
-function setYtid (Ytid) {
-	playerDiv = document.getElementById("player");
-	playerDiv.setAttribute('src', "http://www.youtube.com/embed/" + Ytid + "?enablejsapi=1&theme=light&showinfo=0&modestbranding=1&controls=0&autoplay=1");
-	player.mute();
-}
-
-function closeVideo () {
-	modal = document.getElementById("modal");
-	modal.style.zIndex = "-10";
-	modal.style.display = "none";
-	document.body.style.background = "white";
-}
-
-function imageClicked(Ytid) {
-	if (event.target.parentNode.id == "current") {
-		clickedVideo = true;
-		setYtid(Ytid);
-		document.body.style.background = "#ff7651";
-		document.getElementById("modal").style.display = "block";
-		document.getElementById("modal").style.zIndex = 10;
-	}
-}
-
-function setTimer() {
-	console.log ('timer on');
-	start = new Date();
-}
-
-function stopTimer() {
-	console.log ('timer off');
-	elapsed = new Date() - start;
-	elapsed = elapsed / 1000
-	start = 0;
-}
-
-function endStudy() {
-	document.body.innerHTML = "Congrats you're done!"
-	console.log (results);
 }
 
 function handleRequest (url, error, onloadCallback) {

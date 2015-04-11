@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Glyph | Demo</title>
+
+		<!-- JQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='slideshow-demo.css') }}"></link>
+		<script src="{{ url_for('static', filename='slideshow-demo.js') }}"></script>
+		<script>
+		    init(); 
+		</script>
+
+		<!-- Font awesome + google fonts -->
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+
+	</head>
+	<body>
+
+		<div class="imageContainer" id="evenImage"></div>
+		<div class="imageContainer" id="oddImage"></div>
+
+		<div class="headline">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod fringilla tortor eget tristique. Mauris viverra metus ex, at malesuada mauris vehicula et. Nulla vitae tellus sit amet elit sollicitudin aliquam ac sed libero. Nullam et ipsum semper, cursus diam et, imperdiet sem. Nulla porta dictum placerat. <span>Here is who took this video.</span></div>
+
+		<div id="fullscreenButton" onclick="fullscreen()"><p>FULLSCREEN</p></div>
+		<div id="nextButton" onclick="next()"><p>NEXT</p></div>
+		
+	</body>
+</html>

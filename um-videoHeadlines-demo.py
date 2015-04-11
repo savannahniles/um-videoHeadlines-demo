@@ -88,10 +88,10 @@ def grid(data):
     return render_template('grid.html', data=data, w=w, h=h, m=m, head=head)
 
 #ultimately how we'll input a URL and be forewarded to that page
-@app.route('/demo')
+@app.route('/slideshow-demo')
 def home():
     data = "news"
-    return render_template('Glyph-eval.html')
+    return render_template('slideshow-demo.html')
 
 
 if __name__ == '__main__':

@@ -111,8 +111,6 @@ def home():
     data = "news"
     return render_template('slideshow-demo.html')
 
-
-
 #------- Serving ---------
 
 

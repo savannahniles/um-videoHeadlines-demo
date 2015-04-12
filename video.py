@@ -110,7 +110,7 @@ def processGif(videoId, start, end, loop, maskType, mask):
 
 	clip = (VideoFileClip(videoFile, audio=False)
 			.subclip(float(start),float(end))
-			.resize(width=600))
+			.resize(width=600)) # .crop(x1=138.7,x2=640, y1=0, y2=512.8))
 	composition = clip
 	d = clip.duration
 
@@ -153,6 +153,7 @@ def processGif(videoId, start, end, loop, maskType, mask):
 				.set_position((p[0],p[1])))
 		composition = CompositeVideoClip([composition, freeze])
 
+	composition.write_videofile("santana.mp4")
 	composition.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
 

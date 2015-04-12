@@ -393,6 +393,7 @@ function outputGif() {
 	var errorMessage = 'There was a problem. The gif could not be loaded.';
 	console.log (createGifUrl);
 	handleRequest(createGifUrl, errorMessage, showGif);
+	focusRight ();
 
 }
 

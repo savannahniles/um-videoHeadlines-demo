@@ -10,15 +10,25 @@ import video
 app = Flask(__name__)
 app.debug=True
 
-#ultimately how we'll input a URL and be forewarded to that page
+#landing page
 @app.route('/')
 def landingPage():
     return render_template('landing-page.html')
 
-#ultimately how we'll input a URL and be forewarded to that page
+#home/start page
 @app.route('/start')
 def umVideoHeadlinesDemo():
     return render_template('um-videoHeadlines-demo.html')
+
+#page for editing a video
+@app.route('/authoringTool/<videoId>')
+def authoringTool(videoId):
+    return render_template('authoringTool.html', videoId=videoId)
+
+
+
+#------- API ---------
+
 
 #POST request to download video on submit and redirect to editting tool
 @app.route('/authoringTool/', methods=['POST'])
@@ -31,10 +41,6 @@ def submitUrl():
         error = "Looks like that's not a valid url."
         return redirect(url_for('umVideoHeadlinesDemo', error=error))
 
-#ultimately how we'll get to access editing a video
-@app.route('/authoringTool/<videoId>')
-def authoringTool(videoId):
-    return render_template('authoringTool.html', videoId=videoId)
 
 @app.route('/authoringTool/makeGif/<videoId>', methods=['GET'])
 def makeGif(videoId):
@@ -77,6 +83,18 @@ def makeThumbnails(videoId):
     response = {'errorCode' : errorCode, 'startThumb': startThumb, 'endThumb': endThumb}
     return json.dumps(response)
 
+#route to look for loops
+@app.route('/authoringTool/loopDetection/<videoId>', methods=['GET'])
+def returnLoops(videoId):
+    errorCode = 0
+    loops = video.loopDetection(videoId)
+    response = {'errorCode' : errorCode, 'loops': loops}
+    return json.dumps(response)
+
+
+
+#------- routes for demos ---------
+
 
 #grid for demos
 @app.route('/grid/<data>', methods=['GET'])
@@ -92,6 +110,10 @@ def grid(data):
 def home():
     data = "news"
     return render_template('slideshow-demo.html')
+
+
+
+#------- Serving ---------
 
 
 if __name__ == '__main__':

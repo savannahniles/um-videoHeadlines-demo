@@ -112,45 +112,50 @@ input[type='text'] {
 
 /* ------------------------- Landing page ----------------------------- */
 
-.landing .outer {
-	height: 90vh;
-	position: static;
-}
 
-#scroll {
-  position: absolute;
-  top: 90vh;
-  width: 100vw;
-  left: 0;
-  text-align: center;
+.landing .big-title {
+	margin: 40px;
+	position: fixed;
+	z-index: 5;
 }
 
 .landing .info {
-	padding: 50px;
+	padding: 0 50px;
 	text-align: center;
+	position: absolute;
+	width: 75vw;
+	right: 0px;
+	top: 0px;
+	background: #dadada
 
 }
 
 .landing .info h2 {
-	font-size: 28px;
+	font-size: 21px;
 	line-height: 200%;
 	text-align: left;
-	color: white;
+	color: #464E54;
+	padding: 50px 100px;
+	margin-bottom: 0;
 }
 
 .landing a {
-	color: #E8E8E8;
+	color: #ff7651;
 }
 
-.landing .orange {
-	background: #ff7651;
-}
 
 .landing .info img {
-	width: 550px;
-	height: 345px;
+	width: 400px;
+	height: 253px;
+	border: 1px solid #464E54;
 	display: inline-block;
-	padding: 40px 20px;
+	margin: 20px 20px 40px 20px;
+}
+
+#mc_embed_signup {
+	width: 500px;
+	background: #dadada;
+	margin: 100px auto;
 }
 
 
@@ -432,11 +437,46 @@ input[type='text'] {
 	display: block;
 }
 
-/* Looping controls */
+/* Auto loop detection */
 
-#loop {
-	/*margin-top: 40px; /*hack*/*/
+#auto-loop {
+	width: auto; 
+	display: block;
+	color: #555555;
+	border: 1px solid #d3d3d3;
+	padding: .4em 1em;
+	font-size: 12px;
+    font-family: 'Avenir';
+    background: white;
+    cursor: pointer;
 }
+
+#loop-results {
+  height: 25px;
+  white-space: nowrap;
+  overflow: scroll;
+  padding: 5px;
+}
+
+#loop-results i {
+	padding-left: 10px;
+}
+
+#loop-results span {
+	padding-right: 30px;
+
+}
+
+#loop-results .pair {
+	cursor: pointer;
+	background: #dadada;
+	padding: 5px;
+	margin-right: 20px;
+	font-style: normal;
+	font-size: 80%;
+}
+
+/* Looping controls */
 
 .ui-buttonset .ui-button {
 	border-radius: 0px;

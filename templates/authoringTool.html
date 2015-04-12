@@ -49,7 +49,7 @@
 						
 						<!-- the bottom controls -->
 						<div id="controls">
-							<label class="controls-heading"> Clip Selection <span> Drag the slider to change. Or edit the text boxes and hit 'Enter'. </span> </label>
+							<label class="controls-heading"> Clip Selection <span> Drag the slider to change. Or edit the text boxes below and hit 'Enter'. </span> </label>
 							<div id="slider-range"></div>
 							<p class="controls-section">
 							  <label for="start"> Start time: </i></label>
@@ -57,6 +57,14 @@
 							  <label for="duration"> Clip Duration: </label>
 							  <input type="text" id="duration">
 							</p>
+
+							<!-- Loop detection  -->
+							<div class="controls-section">
+								<label class="controls-heading"> Auto-Detect Loops <span> Automatically detect any perfect loops that happen in this clip. </span> </label>
+								<div id="loop-results">
+									<button class="choice-button" id="auto-loop" onclick="loopDetection()">Perform Loop Detection</button>
+								</div>
+							</div>
 							
 						</div> <!-- end controls -->
 
@@ -79,6 +87,19 @@
 						</div>
 					</div>
 
+					<!-- Loooooping -->
+					<div class="controls-section" id="loop">
+					  	<label class="controls-heading"> Looping <span> Select how the gif loops. </span> </label>
+					    <input class="loopButton" type="radio" value="time_symetrize" id="time_symetrize" name="loop">
+					    	<label for="time_symetrize">Forewards/Backwards</label>
+					    <input class="loopButton" type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
+					    	<label for="progressive_fade">Progressive Fade</label>
+					    <input class="loopButton" type="radio" value="still_fade" id="still_fade" name="loop">
+					    	<label for="still_fade">Still Fade</label>
+					    <input class="loopButton" type="radio" value="standard" id="standard" name="loop" checked="checked">
+					    	<label for="standard">Standard</label>
+					</div>
+
 					<!-- mask editor -->
 					<div class="controls-section">
 						<label class="controls-heading"> Masking <span> Designate regions of the clip as static and dynamic. </span> </label>
@@ -97,19 +118,6 @@
 						</p>
 						</br>
 
-					</div>
-
-					<!-- Loooooping -->
-					<div class="controls-section" id="loop">
-					  	<label class="controls-heading"> Looping <span> Select how the gif loops. </span> </label>
-					    <input class="loopButton" type="radio" value="time_symetrize" id="time_symetrize" name="loop">
-					    	<label for="time_symetrize">Forewards/Backwards</label>
-					    <input class="loopButton" type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
-					    	<label for="progressive_fade">Progressive Fade</label>
-					    <input class="loopButton" type="radio" value="still_fade" id="still_fade" name="loop">
-					    	<label for="still_fade">Still Fade</label>
-					    <input class="loopButton" type="radio" value="standard" id="standard" name="loop" checked="checked">
-					    	<label for="standard">Standard</label>
 					</div>
 
 					<div class="controls-section output-button"> <!-- output button -->

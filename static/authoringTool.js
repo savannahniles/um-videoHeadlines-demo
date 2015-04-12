@@ -253,7 +253,7 @@ function getRadioVal(id) {
 //---------------------------The place where shit gets built as a result of asynch calls-----------------------------
 
 function resetGifContainer () {
-	document.getElementById("gifContainer").innerHTML='<p id="loadingGif"><i class="fa fa-spinner fa-spin fa-3x fa-fw margin-bottom"></i></br>Generating your gif...</p>'; 
+	document.getElementById("gifContainer").innerHTML='<p id="loadingGif"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw margin-bottom"></i></br>Generating your gif...</p>'; 
 }
 
 var showGif = function () {
@@ -301,6 +301,23 @@ var showThumbnails = function () {
 
 }
 
+var showAutoLoopResults = function () {
+	console.log ("auto loop");
+	response = JSON.parse(this.responseText);
+	console.log (response);
+	if (!response) {
+		handleError ("Whoops, error getting response.")
+		return;
+	}
+	loopResults = document.getElementById("loop-results");
+	loopResults.innerHTML = "<span class='small-text'>Loops in this clip (scroll for more, click to set)<i class='fa fa-angle-right'></i> </span>";
+	for (var i = 0; i < response.loops.length; i++) {
+		var d = Number(( parseFloat(response.loops[i].end) - parseFloat(response.loops[i].start) ).toFixed(2));
+		var pair = "<span class='pair hover-highlight small-text' onclick='pairClicked(" + response.loops[i].start + "," + response.loops[i].end + ")'>Start time: " + response.loops[i].start + " | Duration: " + d + " s</span>"
+		loopResults.innerHTML += pair;
+	};
+}
+
 //---------------------------Click listeners-----------------------------
 
 function focusLeft () {
@@ -313,6 +330,25 @@ function focusRight () {
 	document.getElementById("gifBuilder").style.left = "-70%";
 	document.getElementById("focus-right-button").style.opacity = "0";
 	document.getElementById("focus-left-button").style.opacity = "1";
+}
+
+function loopDetection() {
+	document.getElementById("loop-results").innerHTML = "<i class='fa fa-circle-o-notch fa-spin fa-lg fa-fw margin-bottom'></i>Looking for loops. This takes a while."
+	var autoLoopUrl = _STATIC_URL + 'authoringTool/loopDetection/' + videoId;
+	var errorMessage = 'There was a problem automatically detecting loops in this clip.';
+	handleRequest(autoLoopUrl, errorMessage, showAutoLoopResults);
+}
+
+function pairClicked (pairStart, pairEnd) {
+	console.log('clicked!');
+	startTime = parseFloat(pairStart);
+	endTime = parseFloat(pairEnd);
+	duration = endTime - startTime;
+	$( "#slider-range" ).slider( "value", startTime );
+    $( "#start" ).val(startTime);
+    $( "#duration" ).val(duration);
+	loopVideo(); 
+	refreshThumbnails();
 }
 
 function outputGif() {

@@ -2,6 +2,7 @@ import os, sys, io, json, subprocess
 from bs4 import BeautifulSoup
 from moviepy.editor import *
 import moviepy.video.tools.drawing as dw #for masking
+from moviepy.video.tools.cuts import FramesMatches #for loop detection
 
 
 _STATIC_URL		= "/"
@@ -51,6 +52,44 @@ def createThumbnail(videoId, time, startOrEnd):
 	clip = VideoFileClip(videoFile, audio=False)
 	clip.save_frame(thumbnailPath, t=float(time)) # saves the frame a t=2s
 	return os.path.join(_STATIC_URL, thumbnailPath)
+
+def loopDetection(videoId):
+	print "////////////////"
+	print "Looking for loops..."
+
+	outputDir = os.path.join(_STATIC_BASE, videoId)
+	selected_scenes_file = os.path.join(outputDir, "selected_scenes.txt") #ultimately what we want to fill
+	if not os.path.exists(selected_scenes_file):
+
+		videoFile = getVideoPath(videoId)
+		clip = VideoFileClip(videoFile, audio=False)
+		
+		clip_small = clip.resize(width=150) # Downsize the clip to a width of 150px to speed up things
+
+		matches = FramesMatches.from_clip(clip_small, 5, 3) # Find all the pairs of matching frames an return their corresponding start and end times.
+		# matchesFile = os.path.join(outputDir, "matches.txt") # (Optional) Save the matches for later use. 
+		# matches.save(matchesFile)
+		# matches = FramesMatches.load(matchesFile)
+
+		# Filter the scenes: keep only segments with duration >1.5 seconds,
+		# where the first and last frame have a per-pixel distance < 1,
+		# with at least one frame at a distance 2 of the first frame,
+		# and with >0.5 seconds between the starts of the selected segments.
+		selected_scenes = matches.select_scenes(match_thr=10, min_time_span=1.5, nomatch_thr=.5, time_distance=1)
+
+		print " ______ selected_scenes ______ " #if any
+		selected_scenes.save(selected_scenes_file) #save selected scenes
+
+	scenes = []
+	ss = open(selected_scenes_file, "r")
+	for line in ss:
+		start, end, c, d = line.split("\t")
+		scene = {
+			'start': start,
+			'end': end
+		}
+		scenes.append(scene)
+	return scenes
 
 def time_symetrize(clip):
 	""" Returns the clip played forwards then backwards. In case
@@ -118,13 +157,6 @@ def processGif(videoId, start, end, loop, maskType, mask):
 	return os.path.join(_STATIC_URL, gifPath)
 
 #-------------------------------------- getters -------------------------------------- 
-
-def getScenes(videoId): #returns shots
-	#this is all wrong
-	scenesJson = os.path.join(_STATIC_BASE, videoId, 'scenes.json')
-	jsonData = open(scenesJson).read()
-	scenes = json.loads(jsonData)
-	return scenes
 
 def getVideoPath(videoId):
 	videoFile = os.path.join(_STATIC_BASE, videoId, videoId + '.mp4')

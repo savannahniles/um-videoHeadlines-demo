@@ -119,6 +119,13 @@ input[type='text'] {
 	z-index: 5;
 }
 
+.landing .small-text {
+	position: absolute;
+  left: 99px;
+  top: 15px;
+  color: #dadada;
+}
+
 .landing .info {
 	padding: 0 50px;
 	text-align: center;

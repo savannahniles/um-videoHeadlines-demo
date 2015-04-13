@@ -110,7 +110,7 @@ def processGif(videoId, start, end, loop, maskType, mask):
 
 	clip = (VideoFileClip(videoFile, audio=False)
 			.subclip(float(start),float(end))
-			.resize(width=600)) # .crop(x1=138.7,x2=640, y1=0, y2=512.8))
+			.resize(width=600)) #.crop(x1=138.7,x2=640, y1=0, y2=512.8))
 	composition = clip
 	d = clip.duration
 

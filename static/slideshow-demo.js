@@ -50,6 +50,12 @@ function next () {
 	if (data.length == currentImage) {
 		currentImage = 0;
 		nextImage = 1;
+
+		evenImageDiv.innerHTML = buildImage (currentImage);
+		evenImageDiv.setAttribute( "id", "current" );
+		oddImageDiv.innerHTML = buildImage (nextImage);
+		oddImageDiv.setAttribute( "id", "next" );
+
 	}
 	else {
 		setImages ();
@@ -84,8 +90,7 @@ function setImages () {
 
 function buildImage (index) {
 	//set text 
-	var placeholderText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod fringilla tortor eget tristique. Mauris viverra metus ex, at malesuada mauris vehicula et. Nulla vitae tellus sit amet elit sollicitudin aliquam ac sed libero. Nullam et ipsum semper, cursus diam et, imperdiet sem. Nulla porta dictum placerat. <span class='specialFont'>Here is who took this video.</span>";
-	document.getElementById("headline").innerHTML = data[currentImage].title + " " + placeholderText;
+	document.getElementById("headline").innerHTML = data[currentImage].title + " " + "<span class='specialFont'>" + data[currentImage].source + "</span>";
 
 	html = '<img src=" ' +data[index].gifUrl+  '  ">';
 	return html;

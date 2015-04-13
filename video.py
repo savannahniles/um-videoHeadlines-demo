@@ -148,12 +148,11 @@ def processGif(videoId, start, end, loop, maskType, mask):
 	if (maskType == 'maskInner'):
 		print("in mask_inner")
 		freeze = (clip.fx(vfx.crop, x1=p[0], y1=p[1], x2=p[2], y2=p[3])
-				.to_ImageClip(t=0)
+				.to_ImageClip(t=2)
 				.set_duration(d)
 				.set_position((p[0],p[1])))
 		composition = CompositeVideoClip([composition, freeze])
 
-	composition.write_videofile("santana.mp4")
 	composition.write_gif(gifPath)
 	return os.path.join(_STATIC_URL, gifPath)
 

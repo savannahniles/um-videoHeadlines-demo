@@ -14,9 +14,9 @@ var evenImageDiv, oddImageDiv;
 var _STATIC_URL = "/";
 
 
-function init () {
+function init (dataFile) {
 
-	dataUrl = _STATIC_URL + "static/gridData/news.json"
+	dataUrl = _STATIC_URL + "static/gridData/"+dataFile+".json"
 	handleRequest(dataUrl, "The glyphs couldn't be loaded.", setup);
 }
 

@@ -106,10 +106,9 @@ def grid(data):
     return render_template('grid.html', data=data, w=w, h=h, m=m, head=head)
 
 #ultimately how we'll input a URL and be forewarded to that page
-@app.route('/slideshow-demo')
-def home():
-    data = "news"
-    return render_template('slideshow-demo.html')
+@app.route('/slideshow-demo/<data>', methods=['GET'])
+def home(data):
+    return render_template('slideshow-demo.html', data=data)
 
 #------- Serving ---------
 

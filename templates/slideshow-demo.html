@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='slideshow-demo.css') }}"></link>
 		<script src="{{ url_for('static', filename='slideshow-demo.js') }}"></script>
 		<script>
-		    init(); 
+		    init({{ data|tojson }});
 		</script>
 
 		<!-- Font awesome + google fonts -->

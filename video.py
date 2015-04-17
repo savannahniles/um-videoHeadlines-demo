@@ -39,7 +39,6 @@ def download(videoId, url):
 	try:
 		response = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
 		print response
-		# detectScenes(videoId)
 	except subprocess.CalledProcessError as e:
 		error = e.output #we probably want to log the errors somewhere for each file
 		print error

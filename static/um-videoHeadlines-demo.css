@@ -133,7 +133,7 @@ input[type='text'] {
 	width: 75vw;
 	right: 0px;
 	top: 0px;
-	background: #dadada
+	/*background: #dadada*/
 
 }
 
@@ -161,7 +161,7 @@ input[type='text'] {
 
 #mc_embed_signup {
 	width: 500px;
-	background: #dadada;
+	/*background: #dadada;*/
 	margin: 100px auto;
 }
 

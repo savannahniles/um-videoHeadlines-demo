@@ -114,8 +114,7 @@ input[type='text'] {
 
 
 .landing .big-title {
-	margin: 40px;
-	position: fixed;
+	 margin: 40px auto;
 	z-index: 5;
 }
 
@@ -130,38 +129,45 @@ input[type='text'] {
 	padding: 0 50px;
 	text-align: center;
 	position: absolute;
-	width: 75vw;
-	right: 0px;
-	top: 0px;
+	/*width: 75vw;*/
+	/*right: 0px;*/
+	top: 320px;
 	/*background: #dadada*/
+	font-weight: lighter;
 
 }
 
 .landing .info h2 {
 	font-size: 21px;
-	line-height: 200%;
 	text-align: left;
 	color: #464E54;
 	padding: 50px 100px;
 	margin-bottom: 0;
 }
 
-.landing a {
-	color: #ff7651;
+.landing .italic {
+	border-bottom: 2px solid #ff7651;
 }
 
+.landing .info ul {
+	list-style-type: circle;
+}
 
-.landing .info img {
-	width: 400px;
-	height: 253px;
-	border: 1px solid #464E54;
+.landing a {
+	color: #ff7651;
+	text-decoration: none;
+	border-bottom: 2px solid #ff7651;
+}
+
+.landing .info .huge {
 	display: inline-block;
-	margin: 20px 20px 40px 20px;
+	margin: 20px 20px 10px 20px;
+	border: 1px solid #B6B6B6;
 }
 
 #mc_embed_signup {
 	width: 500px;
-	/*background: #dadada;*/
+	border: 2px solid #ff7651;
 	margin: 100px auto;
 }
 

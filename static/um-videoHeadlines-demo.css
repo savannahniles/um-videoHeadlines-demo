@@ -128,10 +128,10 @@ input[type='text'] {
 .landing .info {
 	padding: 0 50px;
 	text-align: center;
-	position: absolute;
+	position: relative;
 	/*width: 75vw;*/
 	/*right: 0px;*/
-	top: 320px;
+	/*top: 320px;*/
 	/*background: #dadada*/
 	font-weight: lighter;
 
@@ -165,10 +165,16 @@ input[type='text'] {
 	border: 1px solid #B6B6B6;
 }
 
+.signupContainer {
+	width: 100%;
+	background: #dadada;
+	margin-top: 50px;
+  	padding: 50px 0;
+}
+
 #mc_embed_signup {
 	width: 500px;
-	border: 2px solid #ff7651;
-	margin: 100px auto;
+	margin: 0px auto;
 }
 
 

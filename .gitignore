@@ -8,4 +8,5 @@ lib
 /static/video
 /looping-tests
 video.pyc
-/eval
+/eval/
+/static/eval/

@@ -1,0 +1,38 @@
+<div id="test"></div>
+
+<script type="text/javascript">
+
+var questions = [
+"Which is your favorite?",
+"Which is about Cuba?",
+"Which are you most curious about?",
+"Which is about Nigeria?",
+"Which is most entertaining?",
+"Which is most like from a movie?"
+]
+
+var URLs = [
+"http://localhost:5000/grid/glyphsEval12-2?w=200&h=150&m=10&test=gif",
+"http://localhost:5000/grid/glyphsEval12-2?w=200&h=150&m=10&test=video",
+"http://localhost:5000/grid/imgEval12-2?w=200&h=150&m=10&test=gif",
+"http://localhost:5000/grid/glyphsEval12?w=200&h=150&m=10&test=gif",
+"http://localhost:5000/grid/glyphsEval12?w=200&h=150&m=10&test=video",
+"http://localhost:5000/grid/imgEval12?w=200&h=150&m=10&test=gif"
+]
+
+shuffle(questions);
+shuffle(URLs);
+
+for (var i = 0; i < questions.length; i++) {
+	var question = document.createElement("div");
+	question.innerHTML = "<a href='"+URLs[i]+"' target='blank'>"+questions[i]+"</a>"
+	document.getElementById('test').appendChild(question)
+};
+
+function shuffle(o){ //v1.0
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+
+</script>

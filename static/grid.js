@@ -1,13 +1,14 @@
-var data, w, h, m, head;
+var data, w, h, m, head, test;
 var _STATIC_URL = "/";
 
-function init (DATA, W, H, M, HEAD) {
+function init (DATA, W, H, M, HEAD, TEST) {
 
 	data = DATA;
 	w = W;
 	h = H;
 	m = M;
 	head = HEAD;
+	test = TEST;
 
 	//read data and build grid
 	dataUrl = _STATIC_URL + "static/gridData/" + data + ".json"
@@ -63,23 +64,45 @@ var setup = function () {
 		handleError ("Whoops, error getting response.")
 		return;
 	}
+	shuffle(response);
 
 	//iterate through each image and build/insert it
 	for (var i = 0; i < response.length; i++) {
 		gifUrl = response[i].gifUrl;
 		title = response[i].title;
 		YTid = response[i].Ytid;
+
+		if (test=="video") {
+		var glyph = document.createElement("iframe");
+			glyph.setAttribute('src', "http://www.youtube.com/embed/"+YTid+"?autoplay=1&showinfo=0&controls=0");
+			glyph.setAttribute('width', w);
+			glyph.setAttribute('height', h);
+			glyph.setAttribute('frameborder', 0);
+			glyph.style.margin = m + "px";
+			glyph.setAttribute('class', 'glyph');
+
+		// var glyph = document.createElement("div");
+		// glyph.innerHTML = '<iframe width="'+w+'" height="'+h+'" class="glyph" src="http://www.youtube.com/embed/'+YTid+'?autoplay=1" frameborder="0" style="margin:'+m+'px;" allowfullscreen></iframe>'
+
+
+			document.getElementById('grid').appendChild(glyph);
+
+		}
+
+		if (test=="gif") {
 		var glyph = document.createElement("img");
 
-		glyph.setAttribute('src', gifUrl);
-		glyph.setAttribute('width', w);
-		glyph.setAttribute('height', h);
-		glyph.setAttribute('onclick', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
-		glyph.setAttribute('ontouchstart', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
-		glyph.style.margin = m + "px";
-		glyph.setAttribute('class', 'glyph');
+			glyph.setAttribute('src', gifUrl);
+			glyph.setAttribute('width', w);
+			glyph.setAttribute('height', h);
+			glyph.setAttribute('onclick', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
+			glyph.setAttribute('ontouchstart', 'glyphClicked("'+gifUrl+'", "'+title+'", "'+YTid+'")');
+			glyph.style.margin = m + "px";
+			glyph.setAttribute('class', 'glyph');
+			document.getElementById('grid').appendChild(glyph);
 
-		document.getElementById('grid').appendChild(glyph);
+		}
+
 	};
 
 }
@@ -149,3 +172,8 @@ window.addEventListener('load', function(){ // on page load
     // }, false)
  
 }, false)
+
+function shuffle(o){ //v1.0
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};

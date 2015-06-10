@@ -96,25 +96,25 @@ def returnLoops(videoId):
 #------- routes for demos ---------
 
 
-#grid for demos
-@app.route('/grid/<data>', methods=['GET'])
-def grid(data): 
-    w = request.args.get('w')
-    h = request.args.get('h')
-    m = request.args.get('m')
-    head = request.args.get('head')
-    test = request.args.get('test')
-    return render_template('grid.html', data=data, w=w, h=h, m=m, head=head, test=test)
+# #grid for demos
+# @app.route('/grid/<data>', methods=['GET'])
+# def grid(data): 
+#     w = request.args.get('w')
+#     h = request.args.get('h')
+#     m = request.args.get('m')
+#     head = request.args.get('head')
+#     test = request.args.get('test')
+#     return render_template('grid.html', data=data, w=w, h=h, m=m, head=head, test=test)
 
-#ultimately how we'll input a URL and be forewarded to that page
-@app.route('/slideshow-demo/<data>', methods=['GET'])
-def home(data):
-    return render_template('slideshow-demo.html', data=data)
+# #ultimately how we'll input a URL and be forewarded to that page
+# @app.route('/slideshow-demo/<data>', methods=['GET'])
+# def home(data):
+#     return render_template('slideshow-demo.html', data=data)
 
-#ultimately how we'll input a URL and be forewarded to that page
-@app.route('/grid-test', methods=['GET'])
-def gridTest():
-    return render_template('gridTest.html')
+# #ultimately how we'll input a URL and be forewarded to that page
+# @app.route('/grid-test', methods=['GET'])
+# def gridTest():
+#     return render_template('gridTest.html')
 
 
 #------- Serving ---------

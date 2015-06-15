@@ -129,8 +129,8 @@ function splitMaskButtonClicked () {
 		document.getElementById("region-choice").style.opacity = "";
 	}
 	$( '#arrow-up' ).css("left", "-26px")
-	$( "#1-label span" ).text("Still Right Region");
-	$( "#2-label span" ).text("Still Left Region");
+	$( "#1-label span" ).text("Freeze Right Side");
+	$( "#2-label span" ).text("Freeze Left Side");
 	
 }
 
@@ -148,16 +148,36 @@ function regionMaskButtonClicked () {
 		document.getElementById("region-choice").style.opacity = "";
 	}
 	$( '#arrow-up' ).css("left", "106px")
-	$( "#1-label span" ).text("Still Inner Region");
-	$( "#2-label span" ).text("Still Outer Region");
+	$( "#1-label span" ).text("Freeze Inner Region");
+	$( "#2-label span" ).text("Freeze Outer Region");
 }
 
 //---------------------------JQuery UI slider-----------------------------
 
+// var changeStartVal = function() {
+// 	startTime = parseFloat($(this).val());
+// 	endTime = startTime + duration;
+//     $( "#slider-range" ).slider( "value", startTime );
+//     loopVideo();
+//     refreshThumbnails();
+// }
+
+// var changeDurationVal = function() {
+// 	duration = parseFloat($(this).val());
+// 	endTime = startTime + duration;
+//     loopVideo();
+//     refreshThumbnails();
+// }
+
+// function updateTimeButton() {
+// 	changeStartVal;
+// 	changeDurationVal;
+// }
+
 function initSlider() {
 	$(function() {
 		startTime = 10.05;
-		duration = 2;
+		duration = 2.25;
 		endTime = startTime + duration;
 		var videoDuration = player.getDuration();
 	    $( "#slider-range" ).slider({
@@ -177,19 +197,18 @@ function initSlider() {
 	    $( "#duration" ).val(duration);
 
 	    $( "#start" ).change(function() {
-	    	startTime = parseFloat($(this).val());
-	    	endTime = startTime + duration;
+			startTime = parseFloat($(this).val());
+			endTime = startTime + duration;
 		    $( "#slider-range" ).slider( "value", startTime );
 		    loopVideo();
 		    refreshThumbnails();
 		});
 	    $( "#duration" ).change(function() {
-	    	duration = parseFloat($(this).val());
-	    	endTime = startTime + duration;
+			duration = parseFloat($(this).val());
+			endTime = startTime + duration;
 		    loopVideo();
 		    refreshThumbnails();
 		});
-
 	});
 
 }
@@ -208,6 +227,10 @@ function loopVideo() {
 			console.log("the video reached the end time! " + endTime);
 			player.seekTo(startTime);
 		}
+
+		//update the value where we show the current time
+		box = document.getElementById("time-box");
+		$(box).val(player.getCurrentTime());
 	}
 	timeUpdater = setInterval(updateTime, 100);
 }
@@ -271,7 +294,6 @@ var showGif = function () {
 
 	gifContainer.innerHTML="";
 	gifContainer.appendChild(gif);
-	document.getElementById("rightColTitle").innerHTML = "Like it? Right click to save."
 	
 }
 
@@ -359,10 +381,12 @@ function outputGif() {
 	}
 
 	clearError ();
-	player.pauseVideo();
+	// player.pauseVideo();
 	resetGifContainer();
 
-	var resize = 600; //resize is currently defaulted to this on the server
+	var pixelWidth = document.getElementById('output-size').value; //get this
+	console.log(pixelWidth);
+
 
 	//get loop value
 	var loop = getRadioVal("loopButton"); 
@@ -374,22 +398,25 @@ function outputGif() {
 	console.log (maskRegion);
 	//check to see if each mask editor is open
 	if ( !$("#split-mask").hasClass("mask-hidden") ) {
-		mask = resizeMask(currentMaskCoordinates, resize); 
-		maskType = "maskLeft"
-		if (maskRegion == 2) {
-			maskType = "maskRight";
-		}
-
+		mask = resizeMask(currentMaskCoordinates, pixelWidth);
+		if (mask != null) {
+			maskType = "maskLeft"
+			if (maskRegion == 2) {
+				maskType = "maskRight";
+			}
+		} 
 	}
 	else if ( !$("#region-mask").hasClass("mask-hidden") ) {
-		maskType = "maskInner";
-		mask = resizeMask(currentMaskCoordinates, resize);
-		if (maskRegion == 2) {
-			maskType = "maskOuter";
+		mask = resizeMask(currentMaskCoordinates, pixelWidth);
+		if (mask != null) {
+			maskType = "maskInner";
+			if (maskRegion == 2) {
+				maskType = "maskOuter";
+			}
 		}
 	}
 
-	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime + '&loop=' + loop + '&maskType=' + maskType + '&mask=' + mask;
+	var createGifUrl = _STATIC_URL + 'authoringTool/makeGif/' + videoId + '?start=' + startTime + '&end=' + endTime + '&pixelWidth=' + pixelWidth + '&loop=' + loop + '&maskType=' + maskType + '&mask=' + mask;
 	var errorMessage = 'There was a problem. The gif could not be loaded.';
 	console.log (createGifUrl);
 	handleRequest(createGifUrl, errorMessage, showGif);
@@ -397,16 +424,19 @@ function outputGif() {
 
 }
 
-function resizeMask(currentMaskCoordinates, resize) {
-	// dimension of drawing / dimension of player = resize mask X / dimensions of new gif
+function resizeMask(currentMaskCoordinates, resizeX) {
+	// dimension of drawing / dimension of player = resize mask X / dimensions of new gif		
 	var x1, y1, x2, y2;
+	var resizeY = resizeX * 315 / 560
 
-	x1 = parseInt(currentMaskCoordinates[0] * 600 / 560);
-	y1 = parseInt(currentMaskCoordinates[1] * 337 / 315);
-	x2 = parseInt(currentMaskCoordinates[2] * 600 / 560);
-	y2 = parseInt(currentMaskCoordinates[3] * 337 / 315);
+	x1 = parseInt(currentMaskCoordinates[0] * resizeX / 560);
+	y1 = parseInt(currentMaskCoordinates[1] * resizeY / 315);
+	x2 = parseInt(currentMaskCoordinates[2] * resizeX / 560);
+	y2 = parseInt(currentMaskCoordinates[3] * resizeY / 315);
 
 	return [x1, y1, x2, y2];
+	
+	// return null;
 
 }
 

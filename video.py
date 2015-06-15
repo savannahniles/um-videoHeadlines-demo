@@ -1,4 +1,6 @@
-import os, sys, io, json, subprocess
+from __future__ import unicode_literals #for youtube dl
+import os, sys, io, json, subprocess, urlparse
+import youtube_dl #downloading youtube videos
 from bs4 import BeautifulSoup
 from moviepy.editor import *
 import moviepy.video.tools.drawing as dw #for masking
@@ -8,40 +10,37 @@ from moviepy.video.tools.cuts import FramesMatches #for loop detection
 _STATIC_URL		= "/"
 _STATIC_BASE	= "static/video/"
 
+
 def getVideoInfo(url):
 	print "////////////////"
 	print "Getting video info..."
-	cmd = 'youtube-dl -j ' + url
-	try:
-		response = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
-		videoInfo = json.loads(response)
-		videoId = videoInfo['extractor'].strip().replace("-","") + '-' + videoInfo['id']
+	ydl = youtube_dl.YoutubeDL()
+	r = None
+	with ydl:
+		r = ydl.extract_info(url, download=False)  # don't download, much faster 
+		videoId = r['extractor'].strip().replace("-","") + '-' + r['id']
+		print videoId
 
 		outputDir = os.path.join(_STATIC_BASE, videoId)
 		infoFileName = os.path.join(outputDir, videoId + '.json')
 		if not os.path.exists(outputDir):
 			os.makedirs(outputDir)
-			with open(infoFileName, "w") as f:
-				f.write(json.dumps(videoInfo))
 			download(videoId, url)
 		return videoId
-
-	except subprocess.CalledProcessError as e:
-		error = e.output
-		print error
-		return False
 
 def download(videoId, url):
 	print "////////////////"
 	print "Downloading video..."
+
 	videoPath = getVideoPath(videoId)
-	cmd = 'youtube-dl --recode-video mp4 -o ' + videoPath + ' ' + url
-	try:
-		response = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
-		print response
-	except subprocess.CalledProcessError as e:
-		error = e.output #we probably want to log the errors somewhere for each file
-		print error
+	options = {
+	    'extractaudio' : False,      # only keep the audio
+	    'format': 'mp4',
+	    'outtmpl': videoPath,        # name the file the ID of the video
+	    'noplaylist' : True,        # only download single song, not playlist
+	}
+	with youtube_dl.YoutubeDL(options) as ydl:
+	    ydl.download([url])
 
 def createThumbnail(videoId, time, startOrEnd):
 	print "////////////////"
@@ -99,7 +98,7 @@ def time_symetrize(clip):
 def mask_outsideRegion(clip):
 	return clip.fx(vfx.freeze_region, outside_region=(200, 200, 379, 322))
 
-def processGif(videoId, start, end, loop, maskType, mask):
+def processGif(videoId, start, end, pixelWidth, loop, maskType, mask):
 	print "////////////////"
 	print "Processing gif..."
 
@@ -107,9 +106,13 @@ def processGif(videoId, start, end, loop, maskType, mask):
 	gifPath = getGifPath(videoId, start, end, loop, maskType, mask)
 	print gifPath
 
+	print "--------------"
+
+	print pixelWidth
+
 	clip = (VideoFileClip(videoFile, audio=False)
 			.subclip(float(start),float(end))
-			.resize(width=600)) #.crop(x1=138.7,x2=640, y1=0, y2=512.8))
+			.resize(width=float(pixelWidth))) #.crop(x1=138.7,x2=640, y1=0, y2=512.8))
 	composition = clip
 	d = clip.duration
 
@@ -173,45 +176,4 @@ def getGifPath(videoId, start, end, loop, maskType, mask): #returns shots
 	gifName = videoId + "_scene_" + start.replace('.', '-') + "_" + end.replace('.', '-') + gifOptions + ".gif"
 	gifPath = os.path.join(outputDir, gifName)
 	return gifPath
-
-
-
-
-
-
-
-
-
-
-# def createJson(videoId, input):
-# 	print "////////////////"
-# 	print "Creating json for scenes..."
-# 	f = open(input, 'r')
-# 	shot_xml = BeautifulSoup(f.read())
-# 	f.close()
-# 	shots = []
-
-# 	for shot in shot_xml.shotdetect.body.shots:
-# 		imgs = shot.findAll("img")
-# 		shot = {"start": float(float(shot["msbegin"])/1000),
-# 				"end": float(float(float(shot["msbegin"])+float(shot["msduration"]))/1000),
-# 				"keyframes": {"in_img": os.path.join(_STATIC_URL,_STATIC_BASE, imgs[0]["src"]),
-# 						   "out_img": os.path.join(_STATIC_URL,_STATIC_BASE, imgs[1]["src"])}}
-# 		shots.append(shot)
-
-# 	f = open(os.path.dirname(input)+"/scenes.json", "w")
-# 	f.write(json.dumps(shots))
-# 	f.close()
-
-# def detectScenes(videoId): #I think I need an error message system here....
-# 	print "////////////////"
-# 	print "Detecting scenes..."
-# 	videoFile = getVideoPath(videoId)
-# 	outputDir = os.path.join(_STATIC_BASE, videoId)
-# 	cmd = 'modules/Shotdetect/build/shotdetect-cmd -i %s -a %s -o %s -v -c -f -l -r'% (videoFile, videoId, _STATIC_BASE)
-# 	os.system(cmd) #need to catch errors here I think
-# 	scenes = createJson(videoId, os.path.join(outputDir, "result.xml"))
-
-
-
 

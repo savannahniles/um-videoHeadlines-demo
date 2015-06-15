@@ -22,9 +22,11 @@
 </head>
 <body>
 	<div id="curtain"></div>
-	<div id="authoring-tool-header" class="hover-highlight">
-		<h1>Glyph</h1>
-	</div>
+	<a href="/start">
+		<div id="authoring-tool-header" class="hover-highlight">
+			<h1>Glyph</h1>
+		</div>
+	</a>
 
 
 	<div id="gifBuilder"> <!-- region where the gif is built and displayed -->
@@ -45,24 +47,27 @@
 						<canvas class="mask-canvas mask-hidden" id="region-mask" width="560" height="315"></canvas>
 
 						<!-- the iFrame -->
-						<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId[8:]  }}?enablejsapi=1&theme=light&showinfo=0&modestbranding=1" frameborder="0" id="player-toggle"></iframe>
+						<iframe width="560" height="315" src="http://www.youtube.com/embed/{{ videoId[8:]  }}?enablejsapi=1&theme=light&showinfo=0&modestbranding=1&controls=0" frameborder="0" id="player-toggle"></iframe>
 						
 						<!-- the bottom controls -->
-						<div id="controls">
+						<div id="clip-selection-controls">
 							<label class="controls-heading"> Clip Selection <span> Drag the slider to change. Or edit the text boxes below and hit 'Enter'. </span> </label>
 							<div id="slider-range"></div>
-							<p class="controls-section">
-							  <label for="start"> Start time: </i></label>
+							<p class="controls-section time-controls">
+							  <label for="time-box"> Current time: </i></label>
+							  <input type="text" id="time-box" readonly>
+							  <label for="start"> Clip start: </i></label>
 							  <input type="text" id="start" autofocus>
-							  <label for="duration"> Clip Duration: </label>
+							  <label for="duration"> Clip duration: </label>
 							  <input type="text" id="duration">
+							  <!-- <span id="enter-time" class="custom-button" onclick="">Update Time</span> -->
 							</p>
 
 							<!-- Loop detection  -->
 							<div class="controls-section">
 								<label class="controls-heading"> Auto-Detect Loops <span> Automatically detect any perfect loops that happen in this clip. </span> </label>
 								<div id="loop-results">
-									<button class="choice-button" id="auto-loop" onclick="loopDetection()">Perform Loop Detection</button>
+									<button class="choice-button" id="auto-loop" onclick="loopDetection()">Detect Loops</button>
 								</div>
 							</div>
 							
@@ -91,7 +96,7 @@
 					<div class="controls-section" id="loop">
 					  	<label class="controls-heading"> Looping <span> Select how the gif loops. </span> </label>
 					    <input class="loopButton" type="radio" value="time_symetrize" id="time_symetrize" name="loop">
-					    	<label for="time_symetrize">Forwards/Backwards</label>
+					    	<label for="time_symetrize">Palindrome</label>
 					    <input class="loopButton" type="radio" value="progressive_fade" id="progressive_fade" name="loop" >
 					    	<label for="progressive_fade">Progressive Fade</label>
 					    <input class="loopButton" type="radio" value="still_fade" id="still_fade" name="loop">
@@ -103,25 +108,32 @@
 					<!-- mask editor -->
 					<div class="controls-section">
 						<label class="controls-heading"> Masking <span> Designate regions of the clip as static and dynamic. </span> </label>
-						<div id="split-mask-button" class="mask-button" onclick="splitMaskButtonClicked()">Split Mask</div>
-						<div id="region-mask-button" class="mask-button" onclick="regionMaskButtonClicked()">Region Mask</div>
+						<div id="split-mask-button" class="custom-button" onclick="splitMaskButtonClicked()">Split Mask</div>
+						<div id="region-mask-button" class="custom-button" onclick="regionMaskButtonClicked()">Region Mask</div>
 						</br>
 						<p id="region-choice">
 							<span class="small-text">Options: </span>
 							<span id="arrow-up"></span>
-							<input class="choice-button" type="radio" value="1" id="1" name="region-choice" checked="checked">
-						    	<label for="1" id="1-label">Still Left Region</label>
 							<input class="choice-button" type="radio" value="2" id="2" name="region-choice">
-						    	<label for="2" id="2-label">Still Right Region</label>
-						    <label class="small-text" for="stillFrame"> Still frame for mask: </label>
-							  <input type="text" id="stillFrame">
+						    	<label for="2" id="2-label">Freeze Right Side</label>
+						    <input class="choice-button" type="radio" value="1" id="1" name="region-choice" checked="checked">
+						    	<label for="1" id="1-label">Freeze Left Side</label>
+						    <label class="small-text" for="stillFrame"> Still frame: </label>
+							  <input type="text" id="stillFrame" value="0">
 						</p>
 						</br>
 
 					</div>
-
-					<div class="controls-section output-button"> <!-- output button -->
-					  	<div id="outputGif" class="hover-highlight" onclick="outputGif()">Build GIF</div>
+					<!-- output options -->
+					<div class="controls-section">
+						<label class="controls-heading"> Output <span> Select output options and build your glyph.</span></label>
+						<label class="output-controls" for="output-size"> Pixel width: </label>
+							<input type="text" id="output-size" value="300">
+						<label class="output-controls" for="mp4">Save .mp4?</label>
+							<input type="checkbox" id="mp4">
+						<div class="output-button"> <!-- output button -->
+						  	<div id="outputGif" class="hover-highlight" onclick="outputGif()">Build <i class="fa fa-long-arrow-right"></i></div>
+						</div>
 					</div>
 
 				</div>
